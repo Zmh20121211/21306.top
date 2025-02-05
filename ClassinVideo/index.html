@@ -115,8 +115,8 @@
 		filter = input.value.toUpperCase();
 		li = ul.getElementsByTagName('li');
 		for (i = 0; i < li.length; i++) {// 循环遍历所有列表项，并隐藏那些与搜索查询不匹配的项
-			txtValue = a.textContent || a.innerText;
 			a = li[i].getElementsByTagName("a")[0];
+			txtValue = a.textContent || a.innerText;
 			if (txtValue.toUpperCase().indexOf(filter) > -1) {
 				li[i].style.display = "";
 			} else {
