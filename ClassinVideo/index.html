@@ -1,77 +1,74 @@
-
 <input type="text" id="myInput" onkeyup="myFunction()" placeholder="搜索视频名称：">
-<style>
-	body {
-		background: url('favicon.jpg') no-repeat center center fixed;
-		background-size: cover;
-	}
-</style>
+<head>
+	<style>
+		body {
+			background: url('favicon.jpg') no-repeat center center fixed;
+			background-size: cover;
+		}
+	</style>
+	<title>视频搜索界面</title>
+</head>
 <ul id="myUL">
-	<li><a href="https://21306.top/ClassinVideo/10">课程名称：《钢铁是怎样炼成的》下-8 &nbsp &nbsp &nbsp &nbsp &nbsp 上课时间：2024 年 6 月 8 日</a></li>
-	<li><a href="https://21306.top/ClassinVideo/9">课程名称：《钢铁是怎样炼成的》上-8 &nbsp &nbsp &nbsp &nbsp &nbsp 上课时间：2024 年 6 月 1 日</a></li>
-	<li><a href="https://21306.top/ClassinVideo/8">课程名称：《骆驼祥子》下-7 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp上课时间：2024 年 5 月 25 日</a></li>
-	<li><a href="https://21306.top/ClassinVideo/7">课程名称：《骆驼祥子》上-7 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp上课时间：2024 年 5 月 18 日</a></li>
-	<li><a href="https://21306.top/ClassinVideo/6">课程名称：《呼兰河传》下-7 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp上课时间：2024 年 5 月 4 日</a></li>
-	<li><a href="https://21306.top/ClassinVideo/5">课程名称：《呼兰河传》上-7 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp上课时间：2024 年 4 月 27 日</a></li>
-	<li><a href="https://21306.top/ClassinVideo/4">课程名称：《格列佛游记》下-8 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 上课时间：2024 年 4 月 20 日</a></li>
-	<li><a href="https://21306.top/ClassinVideo/3">课程名称：《格列佛游记》上-8 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 上课时间：2024 年 4 月 13 日</a></li>
-	<li><a href="https://21306.top/ClassinVideo/2">课程名称：《俗世奇人》下-8 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp上课时间：2024 年 4 月 6 日</a></li>
-	<li><a href="https://21306.top/ClassinVideo/1">课程名称：《俗世奇人》上-8 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp上课时间：2024 年 3 月 30 日</a></li>
+	<li><a href="https://21306.top/ClassinVideo/10">课程名称：《钢铁是怎样炼成的》下-8<br>上课时间：2024 年 6 月 8 日</br></a></li>
+	<li><a href="https://21306.top/ClassinVideo/9">课程名称：《钢铁是怎样炼成的》上-8<br>上课时间：2024 年 6 月 1 日</a></li>
+	<li><a href="https://21306.top/ClassinVideo/8">课程名称：《骆驼祥子》下-7<br>上课时间：2024 年 5 月 25 日</br></a></li>
+	<li><a href="https://21306.top/ClassinVideo/7">课程名称：《骆驼祥子》上-7<br>上课时间：2024 年 5 月 18 日</br></a></li>
+	<li><a href="https://21306.top/ClassinVideo/6">课程名称：《呼兰河传》下-7<br>上课时间：2024 年 5 月 4 日</br></a></li>
+	<li><a href="https://21306.top/ClassinVideo/5">课程名称：《呼兰河传》上-7<br>上课时间：2024 年 4 月 27 日</br></a></li>
+	<li><a href="https://21306.top/ClassinVideo/4">课程名称：《格列佛游记》下-8<br>上课时间：2024 年 4 月 20 日</br></a></li>
+	<li><a href="https://21306.top/ClassinVideo/3">课程名称：《格列佛游记》上-8<br>上课时间：2024 年 4 月 13 日</br></a></li>
+	<li><a href="https://21306.top/ClassinVideo/2">课程名称：《俗世奇人》下-8<br>上课时间：2024 年 4 月 6 日</br></a></li>
+	<li><a href="https://21306.top/ClassinVideo/1">课程名称：《俗世奇人》上-8<br>上课时间：2024 年 3 月 30 日</br></a></li>
 </ul>
 <style>
 	#myInput {
-	  background-image: url('https://statiwww.jyshare.com/images/mix/searchicon.png'); /* 添加搜索按钮 */
-	  background-position: 10px 12px; /* 定位搜索按钮 */
-	  background-repeat: no-repeat; /* 图片不重复 */
-	  width: 100%; /* 全屏幕显示 */
-	  font-size: clamp(0.7rem, 0.489rem + 1.05vw, 1.2rem); /* 设置字体大小 */
-	  padding: 11px 20px 10px 40px; /* 设置内边距 */
-	  border: 1px solid #ddd; /* 添加灰色边框 */
-	  margin-bottom: 12px; /* 添加顶部的外边距 */
-	  outline-color: #FF8000;
+		background-image: url('https://statiwww.jyshare.com/images/mix/searchicon.png'); /* 添加搜索按钮 */
+		font-size: clamp(0.7rem, 0.489rem + 1.05vw, 1.2rem); /* 设置字体大小 */
+		background-position: 10px 12px; /* 定位搜索按钮 */
+		background-repeat: no-repeat; /* 图片不重复 */
+		padding: 11px 20px 10px 40px; /* 设置内边距 */
+		margin-bottom: 12px; /* 添加顶部的外边距 */
+		border: 1px solid #ddd; /* 添加灰色边框 */
+		width: 100%; /* 全屏幕显示 */
+		outline-color: #FF8000;
 	}
-	 
 	#myUL {
-	  /* 移除默认的列表样式 */
-	  list-style-type: none;
-	  padding: 0;
-	  margin: 0;
+		list-style-type: none;/* 移除默认的列表样式 */
+		column-count: 2;
+		column-gap: 5px;
+		padding: 0;
+		margin: 0;
 	}
-	 
 	#myUL li a {
-	  border: 0px solid white; /* 链接添加边框 */
-	  margin-top: -1px; /* 防止边框重复 */
-	  background-color: #FFAF60; /* 设置背景颜色 */
-	  padding: 10px; /* 添加内边距 */
-	  text-decoration: none; /* 移除默认的下划线 */
-	  font-size: clamp(0.7rem, 0.489rem + 1.05vw, 1.2rem); /* 设置字体大小 */
-	  color: #3C3C3C; /* 设置文本颜色 */
-	  display: block; /* 以块形式填充到列表 */
-	  margin-bottom: 5px; /* 添加顶部的外边距 */
+		font-size: clamp(0.7rem, 0.489rem + 1.05vw, 1.2rem); /* 设置字体大小 */
+		background-color: #FFAF60; /* 设置背景颜色 */
+		text-decoration: none; /* 移除默认的下划线 */
+		border: 0px solid white; /* 链接添加边框 */
+		margin-bottom: 5px; /* 添加顶部的外边距 */
+		display: block; /* 以块形式填充到列表 */
+		margin-top: -1px; /* 防止边框重复 */
+		color: #3C3C3C; /* 设置文本颜色 */
+		padding: 10px; /* 添加内边距 */
 	}
-	 
 	#myUL li a:hover:not(.header) {
-	  background-color: #FFE66F	; /* 为所有链接添加悬停效果，标题除外 */
+		background-color: #FFE66F	; /* 为所有链接添加悬停效果，标题除外 */
 	}
 </style>
 <script>
 	function myFunction() {
-	  // 声明变量
-	  var input, filter, ul, li, a, i, txtValue;
-	  input = document.getElementById('myInput');
-	  filter = input.value.toUpperCase();
-	  ul = document.getElementById("myUL");
-	  li = ul.getElementsByTagName('li');
-	 
-	  // 循环遍历所有列表项，并隐藏那些与搜索查询不匹配的项
-	  for (i = 0; i < li.length; i++) {
-	    a = li[i].getElementsByTagName("a")[0];
-	    txtValue = a.textContent || a.innerText;
-	    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-	      li[i].style.display = "";
-	    } else {
-	      li[i].style.display = "none";
-	    }
-	  }
+		var input, filter, ul, li, a, i, txtValue;// 声明变量
+		input = document.getElementById('myInput');
+		ul = document.getElementById("myUL");
+		filter = input.value.toUpperCase();
+		li = ul.getElementsByTagName('li');
+		for (i = 0; i < li.length; i++) {// 循环遍历所有列表项，并隐藏那些与搜索查询不匹配的项
+			txtValue = a.textContent || a.innerText;
+			a = li[i].getElementsByTagName("a")[0];
+			if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				li[i].style.display = "";
+			} else {
+				li[i].style.display = "none";
+			}
+		}
 	}
 </script>
