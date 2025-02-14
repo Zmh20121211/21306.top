@@ -4,7 +4,7 @@
 		<link rel="icon" href="favicon.png">
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>系统登录</title>
+		<title>System Login</title>
 		<style>
 			body {
 				background: url('background.jpg') no-repeat;
@@ -22,7 +22,7 @@
 				border-radius: 8px;
 				position: absolute;
 				background: #fff;
-				padding: 20px;
+				padding: 30px;
 				height: 350px;
 				margin: auto;
 				width: 30%;
@@ -71,7 +71,7 @@
 	</head>
 	<body>
 		<div class="login-container">
-			<h1>系统登录</h1>
+			<h1>System Login</h1>
 			<form id="loginForm">
 				<div class="form-group">
 					<label for="username">Username:</label>
@@ -94,15 +94,15 @@
 				const username = document.getElementById('username').value;
 				const password = document.getElementById('password').value;
 				if (username === '' || password === '') {// 验证用户名和密码
-					document.getElementById('message').innerText = '用户名和密码不能为空！';
+					document.getElementById('message').innerText = 'Username and password can't be empty!';
 					return;
 				}
 				if (username !== 'ZMH' || password !== 'Zmh20121211') {// 固定用户名和密码
-					document.getElementById('message').innerText = '用户名或密码错误！';
+					document.getElementById('message').innerText = 'Wrong username or password!';
 					return;
 				}
 				document.getElementById('message').innerText = '';
-				alert('登录成功！');// 登录成功
+				alert('Login successful!');// 登录成功
 				window.location.href = 'https://21306.top/2031935316917970491520419636740245077039821801490130366403200976728940562434261928095092301339386599';// 跳转到管理页面
 			}
 		</script>
