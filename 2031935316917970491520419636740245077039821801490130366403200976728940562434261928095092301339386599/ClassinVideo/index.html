@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<link rel="icon" href="favicon.ico">
+	<title>根据设备重定向</title>
+</head>
+<script>
+    function browserRedirect() { 
+      var sUserAgent= navigator.userAgent.toLowerCase(); 
+      var bIsIpad= sUserAgent.match(/ipad/i) == "ipad"; 
+      var bIsIphoneOs= sUserAgent.match(/iphone os/i) == "iphone os"; 
+      var bIsMidp= sUserAgent.match(/midp/i) == "midp"; 
+      var bIsUc7= sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4"; 
+      var bIsUc= sUserAgent.match(/ucweb/i) == "ucweb"; 
+      var bIsAndroid= sUserAgent.match(/android/i) == "android"; 
+      var bIsCE= sUserAgent.match(/windows ce/i) == "windows ce"; 
+      var bIsWM= sUserAgent.match(/windows mobile/i) == "windows mobile"; 
+      if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) { 
+        window.location.href= 'https://21306.top/ClassinVideo/Mobile'; // 手机网站地址
+      } else { 
+        window.location= 'https://21306.top/ClassinVideo/Desktop'; // 电脑网站地址
+      } 
+    } 
+    browserRedirect(); 
+</script>
