@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<link rel="icon" href="favicon.png">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>System Login</title>
+		<style>
+			body {
+				background: url('background.jpg') no-repeat;
+				background-position: center center;
+				font-family: Arial, sans-serif;
+				background-attachment: fixed;
+				background-repeat: no-repeat;
+				background-color: #fff;
+				background-size: cover;
+				padding: 0;
+				margin: 0;
+			}
+			.login-container {
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+				border-radius: 8px;
+				position: absolute;
+				background: #fff;
+				padding: 30px;
+				height: 350px;
+				margin: auto;
+				width: 30%;
+				bottom: 0;
+				right: 0;
+				left: 0;
+				top: 0;
+			}
+			h1 {
+				text-align: center;
+				color: #333;
+			}
+			.form-group {
+				margin-bottom: 15px;
+			}
+			.form-group label {
+				margin-bottom: 5px;
+				display: block;
+				color: #555;
+			}
+			.form-group input {
+				border: 1px solid #ddd;
+				box-sizing: border-box;
+				border-radius: 4px;
+				padding: 10px;
+				width: 100%;
+			}
+			button {
+				background-color: #28a745;
+				border-radius: 4px;
+				cursor: pointer;
+				padding: 10px;
+				border: none;
+				color: white;
+				width: 100%;
+			}
+			button:hover {
+				background-color: #218838;
+			}
+			.message {
+				text-align: center;
+				margin-top: 10px;
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="login-container">
+			<h1>System Login</h1>
+			<form id="loginForm">
+				<div class="form-group">
+					<label for="username">Username:</label>
+					<input type="text" id="username" name="username" required>
+				</div>
+				<div class="form-group">
+					<label for="password">Password:</label>
+					<input type="password" id="password" name="password" required>
+				</div>
+				<div class="form-group">
+					<button type="submit">Login</button>
+				</div>
+			</form>
+			<div id="message" class="message"></div>
+		</div>
+		<script src="script.js"></script>
+		<script>
+			document.getElementById('loginForm').addEventListener('submit', function(event) {
+				event.preventDefault(); // 阻止表单默认提交行为
+				const username = document.getElementById('username').value;
+				const password = document.getElementById('password').value;
+				if (username === '' || password === '') {// 验证用户名和密码
+					document.getElementById('message').innerText = 'Username and password can't be empty!';
+					return;
+				}
+				if (username !== 'ZMH' || password !== 'Zmh20121211') {// 固定用户名和密码
+					document.getElementById('message').innerText = 'Wrong username or password!';
+					return;
+				}
+				document.getElementById('message').innerText = '';
+				alert('Login successful!');// 登录成功
+				window.location.href = 'https://21306.top/2031935316917970491520419636740245077039821801490130366403200976728940562434261928095092301339386599';// 跳转到管理页面
+			});
+		</script>
+	</body>
+</html>
