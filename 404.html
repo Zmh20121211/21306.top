@@ -1,1 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>404 - 访问异常</title>
+		<style>
+			:root {
+				--energy-color: #00f3ff;
+			}
+
+			body {
+				margin: 0;
+				background: #000;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				overflow: hidden;
+				font-family: 'Arial', sans-serif;
+			}
+
+			.energy-field {
+				position: relative;
+				width: 95%;
+				height: 95%;
+			}
+
+			.portal {
+				position: absolute;
+				width: 300px;
+				height: 300px;
+				border-radius: 70%;
+				border: 5px solid var(--energy-color);
+				box-shadow: 0 0 70px var(--energy-color);
+				animation: pulse 3s infinite;
+			}
+
+			@keyframes pulse {
+				0% {
+					transform: scale(0.9);
+					opacity: 0.8;
+				}
+
+				50% {
+					transform: scale(1.1);
+					opacity: 1;
+				}
+
+				100% {
+					transform: scale(0.9);
+					opacity: 0.8;
+				}
+			}
+
+			.energy-line {
+				position: absolute;
+				background: linear-gradient(to right,
+						transparent 20%,
+						var(--energy-color) 50%,
+						transparent 80%);
+				height: 3px;
+				animation: flow 6s linear infinite;
+			}
+
+			@keyframes flow {
+				from {
+					transform: translateX(-100%);
+				}
+
+				to {
+					transform: translateX(100%);
+				}
+			}
+
+			.error-code {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				color: var(--energy-color);
+				font-size: 6em;
+				text-shadow: 0 0 30px var(--energy-color);
+				z-index: 2;
+			}
+
+			.jump-btn {
+				left: 70%;
+				position: fixed;
+				bottom: 20%;
+				padding: 15px 40px;
+				background: rgba(0, 243, 255, 0.2);
+				border: 2px solid var(--energy-color);
+				color: var(--energy-color);
+				font-size: 1.2em;
+				cursor: pointer;
+				transition: 0.3s;
+				border-radius: 30px;
+				backdrop-filter: blur(5px);
+			}
+
+			.jump-btn:hover {
+				background: var(--energy-color);
+				color: #000;
+				box-shadow: 0 0 30px var(--energy-color);
+				transform: scale(1.1);
+			}
+
+			.particle {
+				position: absolute;
+				background: var(--energy-color);
+				border-radius: 50%;
+				pointer-events: none;
+			}
+
+			/* 新增粒子渐隐动画 */
+			.particle {
+				position: absolute;
+				background: var(--energy-color);
+				border-radius: 50%;
+				pointer-events: none;
+				opacity: 1;
+				transition: all 0.3s ease-out;
+			}
+
+			.particle.fade {
+				opacity: 0;
+				transform: scale(0.5);
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<div class="energy-field">
+			<div class="portal"></div>
+			<div class="error-code">404</div>
+			<a href="https://21306.top" class="jump-btn">返回主界面</a>
+		</div>
+
+		<script>
+			// 创建动态能量流
+			function createEnergyLines() {
+			    const container = document.querySelector('.energy-field');
+			    for(let i = 0; i < 15; i++) {
+			        const line = document.createElement('div');
+			        line.className = 'energy-line';
+			        line.style.top = Math.random() * 100 + '%';
+			        line.style.width = Math.random() * 300 + 100 + 'px';
+			        line.style.animationDelay = Math.random() * 3 + 's';
+			        line.style.opacity = Math.random() * 0.5 + 0.3;
+			        container.appendChild(line);
+			    }
+			}
+			createEnergyLines();
+			
+			// 按钮悬浮增强
+			const btn = document.querySelector('.jump-btn');
+			btn.addEventListener('mouseover', () => {
+			    document.querySelector('.portal').style.animationDuration = '1s';
+			});
+			
+			btn.addEventListener('mouseout', () => {
+			    document.querySelector('.portal').style.animationDuration = '2s';
+			});
+			// 修改后的粒子生成逻辑
+			document.addEventListener('mousemove', (e) => {
+			    const particle = document.createElement('div');
+			    particle.className = 'particle';
+			    particle.style.left = e.clientX + 'px';
+			    particle.style.top = e.clientY + 'px';
+			    particle.style.width = particle.style.height = 
+			        Math.random() * 5 + 2 + 'px';
+			    
+			    document.body.appendChild(particle);
+			    
+			    // 触发渐隐动画
+			    requestAnimationFrame(() => {
+			        particle.classList.add('fade');
+			    });
+			
+			    // 1秒后移除元素
+			    setTimeout(() => {
+			        particle.remove();
+			    }, 1000);
+			});
+		</script>
+	</body>
+
+</html>
 
