@@ -1,42 +1,491 @@
+
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
+
 	<head>
-		<link rel="icon" href="favicon.png">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>全能网站导航</title>
 		<style>
+			:root {
+				--bg: #ffffff;
+				/* 改为纯白 */
+				--card-bg: rgba(255, 255, 255, 0.95);
+				--text: #2c3e50;
+				--primary: #3498db;
+				--link-bg: rgba(245, 245, 245, 0.8);
+			}
+
+			.dark-theme {
+				--bg: #000000;
+				/* 改为纯黑 */
+				--card-bg: rgba(50, 50, 50, 0.95);
+				--text: #ecf0f1;
+				--primary: #2ecc71;
+				--link-bg: rgba(30, 30, 30, 0.8);
+			}
 			body {
-				background: url('background.jpg') no-repeat;
-				background-position: center center;
-				background-attachment: fixed;
-				background-repeat: no-repeat;
-				background-color: #fff;
-				background-size: cover;
+				font-family: 'Segoe UI', system-ui, sans-serif;
+				line-height: 1.6;
+				margin: 0;
+				padding: 20px;
+				color: var(--text);
+				max-width: 1000px;
+				margin: 0 auto;
+				position: relative;
+				background: var(--bg);
+				transition: all 0.3s ease;
+				min-height: 100vh;
 			}
-			button {
-				background-color: #00000000;
-				border-radius: 100px;
-				text-align: center;
-				line-height: 30px;
-				margin-top: 30px;
-				font-size: 30px;
-				cursor: pointer;
-				height: 50px;
-				color: #fff;
-				width: 100%;
-				border: 0;
-			}
-			a {
-				text-decoration: none;
-				display: table-cell;
-				text-align: center;
+
+			.theme-toggle {
 				position: fixed;
-				height: 1px;
-				width: 100%;
-				color: black;
-				bottom: 0;
+				top: 20px;
+				right: -90%;
+				/* 修改此处 */
+				min-width: 60px;
+				height: 40px;
+				border-radius: 20px;
+				padding:12px;
+				border: none;
+				cursor: pointer;
+				background-color: var(--primary);
+				color: white;
+				font-size: 14px;
+				font-weight: 500;
+				box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+				transition: all 0.3s ease;
+				overflow: hidden;
+				position: relative;
+				transform: translateX(0);
+				/* 添加重置变换 */
 			}
+
+			/* 添加文字切换动画 */
+			.theme-toggle span {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				transition: all 0.3s ease;
+				opacity: 0;
+			}
+
+			.theme-toggle .light-text {
+				opacity: 1;
+			}
+
+			.dark-theme .theme-toggle .light-text {
+				opacity: 0;
+				transform: translate(-50%, 100%);
+			}
+
+			.theme-toggle .dark-text {
+				opacity: 0;
+				transform: translate(-50%, -100%);
+			}
+
+			.dark-theme .theme-toggle .dark-text {
+				opacity: 1;
+				transform: translate(-50%, -50%);
+			}
+
+			.theme-toggle:hover {
+				transform: scale(1.1);
+				box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+			}
+
+			.container {
+				max-width: 800px;
+				margin: 60px auto 0;
+			}
+
+			.card {
+				padding: 20px;
+				margin: 20px 0;
+				background-color: var(--card-bg);
+				border-radius: 8px;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				transition: var(--transition);
+			}
+
+			#bg-canvas {
+				position: fixed;
+				top: 0;
+				left: 0;
+				z-index: -1;
+				/* 置于内容下方 */
+			}
+
+			.category {
+				background: var(--card-bg);
+				border-radius: 12px;
+				padding: 20px;
+				margin-bottom: 20px;
+				box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+				backdrop-filter: blur(5px);
+				/* 毛玻璃效果 */
+			}
+
+			h1 {
+				text-align: center;
+				color: var(--primary);
+				margin: 40px 0;
+				font-size: 2.2em;
+				text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			}
+
+			h2 {
+				color: var(--primary);
+				border-left: 4px solid var(--primary);
+				padding-left: 12px;
+				margin: 0 0 15px 0;
+				font-size: 1.3em;
+			}
+
+			.links {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+				gap: 12px;
+			}
+
+			a {
+				display: block;
+				padding: 12px;
+				border-radius: 8px;
+				background: var(--link-bg);
+				color: var(--text);
+				text-decoration: none;
+				transition: all 0.2s ease;
+				font-size: 0.95em;
+				backdrop-filter: blur(2px);
+			}
+
+			a:hover {
+				background: var(--primary);
+				color: white;
+				transform: translateY(-2px);
+				box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+			}
+
+			@media (max-width: 600px) {
+				body {
+					padding: 10px;
+				}
+
+				.category {
+					padding: 15px;
+				}
+
+				h1 {
+					font-size: 1.8em;
+				}
+			}
+
 		</style>
 	</head>
-		<body>
-			<button onclick="window.location.href='https://21306.top/2031935316917970491520419636740245077039821801490130366403200976728940562434261928095092301339386599/ClassinVideo';cursor:pointer;">点击这里访问Classin视频页面</button>
-		</body>
+
+	<body>
+		<button class="theme-toggle" aria-label="切换主题" onclick="toggleTheme()">
+			<span class="light-text">深色</span>
+			<span class="dark-text">浅色</span>
+		</button>
+		<h1>全能网站导航</h1>
+		<!-- 实用工具 -->
+		<div class="category">
+			<h2>🔧 实用工具</h2>
+			<div class="links">
+				<a href="https://s.threatbook.com/" target="_blank">病毒威胁检测</a>
+				<a href="https://smallpdf.com" target="_blank">SmallPDF工具</a>
+				<a href="https://tinypng.com" target="_blank">TinyPNG图片压缩</a>
+				<a href="https://www.remove.bg" target="_blank">Remove.bg抠图</a>
+				<a href="https://uutool.cn/" target="_blank">在线工具合集</a>
+				<a href="https://tool.lu/" target="_blank">开发工具箱</a>
+				<a href="https://www.jyshare.com/front-end/61/" target="_blank">前端在线工具</a>
+				<a href="https://www.quanxiaoha.com/tools/html-formatter" target="_blank">HTML格式化工具</a>
+			</div>
+		</div>
+		<!-- AI工具 -->
+		<div class="category">
+			<h2>🤖 AI工具</h2>
+			<div class="links">
+				<a href="https://chat.deepseek.com/" target="_blank">DeepSeek智能助手</a>
+				<a href="https://yiyan.baidu.com/" target="_blank">文言一心AI</a>
+				<a href="https://t1s1gqtac2.feishu.cn/docx/FhR2dWHrooSOWNxG1MSc5JWknjc" target="_blank">GPT综合文档</a>
+				<a href="https://t1s1gqtac2.feishu.cn/docx/GiZ8dXdcvoYFZ5xTvXOcyZuFnje" target="_blank">Sora文档</a>
+			</div>
+		</div>
+		<!-- 开发者专区 -->
+		<div class="category">
+			<h2>👨💻 开发者专区</h2>
+			<div class="links">
+				<a href="https://learn.microsoft.com/zh-cn/" target="_blank">Windows官方教程</a>
+				<a href="https://developercommunity.visualstudio.com/home" target="_blank">微软开发者社区</a>
+				<a href="https://www.kali.org/get-kali/#kali-platforms" target="_blank">Kali Linux官网</a>
+				<a href="https://github.com/open-mmlab/mmagic" target="_blank">MMagic多媒体框架</a>
+				<a href="https://github.com/Wechat-ggGitHub/Awesome-GitHub-Repo" target="_blank">Awesome仓库合集</a>
+			</div>
+		</div>
+		<!-- 资源下载 -->
+		<div class="category">
+			<h2>📥 资源下载</h2>
+			<div class="links">
+				<a href="https://byrutgame.org/" target="_blank">俄罗斯破解站1</a>
+				<a href="https://rutracker.net/forum/index.php" target="_blank">俄罗斯破解站2</a>
+				<a href="https://freesteam.games/category/limited-time-free" target="_blank">Steam限免情报</a>
+				<a href="https://get.2sb.org/" target="_blank">文件加速下载器</a>
+				<a href="https://gh-proxy.ygxz.in/" target="_blank">GitHub文件加速</a>
+				<a href="https://github.com/XiaoYouChR/Ghost-Downloader-3" target="_blank">幽灵下载器</a>
+				<a href="https://downer.cc/" target="_blank">全平台视频下载器</a>
+			</div>
+		</div>
+		<!-- 影视资源 -->
+		<div class="category">
+			<h2>🎬 影视资源</h2>
+			<div class="links">
+				<a href="https://www.butai0.club/" target="_blank">不太灵影视</a>
+				<a href="https://www.52dianying.vip/" target="_blank">电影教学平台</a>
+				<a href="https://subhd.tv/" target="_blank">SubHD字幕平台</a>
+			</div>
+		</div>
+		<!-- 游戏娱乐 -->
+		<div class="category">
+			<h2>🎮 游戏娱乐</h2>
+			<div class="links">
+				<a href="chrome://dino" target="_blank">Chrome小恐龙</a>
+				<a href="https://poki.com/zh" target="_blank">Poki游戏平台</a>
+				<a href="http://pvz.sdyp0.cn/install.php" target="_blank">植物大战僵尸</a>
+				<a href="https://smashthewalls.com/" target="_blank">砸墙解压游戏</a>
+				<a href="https://html5.gamedistribution.com/rvvASMiM/9ee26ba4405c456094c70af7dc31a524/index.html" target="_blank">几何三角游戏</a>
+			</div>
+		</div>
+		<!-- 摸鱼专区 -->
+		<div class="category">
+			<h2>🐟 摸鱼专区</h2>
+			<div class="links">
+				<a href="http://geektyper.com" target="_blank">黑客伪装模拟器</a>
+				<a href="https://pointerpointer.com" target="_blank">PointerPointer</a>
+				<a href="http://papertoilet.com" target="_blank">一卷手纸模拟器</a>
+				<a href="https://www.meteorshowers.org/" target="_blank">实时流星雨观测</a>
+				<a href="https://proj.warmday.wang/answer/index.html" target="_blank">答案之书</a>
+			</div>
+		</div>
+		<!-- 硬件/网络 -->
+		<div class="category">
+			<h2>🔩 硬件/网络</h2>
+			<div class="links">
+				<a href="https://zh.ifixit.com/" target="_blank">iFixit维修手册</a>
+				<a href="https://www.thingiverse.com/software/ultimaker-cura" target="_blank">3D打印切片软件</a>
+				<a href="https://panel.chmlfrp.cn/home/one" target="_blank">ChmlFrp端口映射</a>
+				<a href="https://dns.console.aliyun.com/#/dns/setting/21306.top" target="_blank">阿里云DNS解析</a>
+			</div>
+		</div>
+		<!-- 特殊项目 -->
+		<div class="category">
+			<h2>🔗 特殊项目</h2>
+			<div class="links">
+				<a href="https://www.21306.top/" target="_blank">21306.top服务</a>
+				<a href="https://github.com/Zmh20121211/21306.top" target="_blank">21306项目源码</a>
+				<a href="https://massgrave.dev/" target="_blank">MAS激活工具</a>
+				<a href="https://similarsites.com/" target="_blank">相似网站发现</a>
+			</div>
+		</div>
+		<script>
+			// 修改后的主题切换函数
+			function toggleTheme() {
+			    const body = document.body;
+			    body.classList.toggle('dark-theme');
+			    
+			    // 保存用户偏好
+			    const isDark = body.classList.contains('dark-theme');
+			    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+			    
+			    // 更新按钮颜色
+			    updateButtonColor();
+			}
+			
+			// 初始化主题时添加文字状态
+			function initTheme() {
+			    const savedTheme = localStorage.getItem('theme') || 'light';
+			    document.body.classList.toggle('dark-theme', savedTheme === 'dark');
+			    updateButtonColor();
+			}
+						// 粒子背景生成脚本（动态尺寸波纹）
+						function createParticleBackground() {
+						  const canvas = document.createElement('canvas');
+						  const ctx = canvas.getContext('2d');
+						  canvas.id = 'bg-canvas';
+						  canvas.width = window.innerWidth;
+						  canvas.height = window.innerHeight;
+						  document.body.prepend(canvas);
+						
+						  const particles = [];
+						  const ripples = [];
+						
+						  // 粒子类
+						  class Particle {
+						    constructor(x, y) {
+						      this.x = x;
+						      this.y = y;
+						      this.size = Math.random() * 2 + 1;
+						      this.speedX = Math.random() * 2 - 1;
+						      this.speedY = Math.random() * 2 - 1;
+						      this.alpha = 1;
+						      this.color = `hsla(${200 + Math.random() * 60}, 40%, 60%, ${this.alpha})`;
+						    }
+						    update() {
+						      this.x += this.speedX;
+						      this.y += this.speedY;
+						      this.alpha -= 0.008;
+						      this.size *= 0.98;
+						    }
+						  }
+						
+						  // 动态尺寸波纹类
+						  class Ripple {
+						    constructor(x, y) {
+						      this.x = x;
+						      this.y = y;
+						      this.radius = 0;
+						      this.maxRadius = this.generateRandomSize(); // 动态尺寸生成
+						      this.color = `hsla(${Math.random() * 360}, 85%, 65%, 1)`;
+						      this.alpha = 1;
+						      this.expandSpeed = this.calculateExpandSpeed(); // 速度与尺寸关联
+						      this.lineWidth = 4 + Math.random() * 4;
+						    }
+						    
+						    // 生成随机尺寸（80-220px）
+						    generateRandomSize() {
+						      const sizes = [80, 120, 160, 200];
+						      return sizes[Math.floor(Math.random() * sizes.length)] + Math.random() * 40;
+						    }
+						    
+						    // 根据尺寸计算扩散速度
+						    calculateExpandSpeed() {
+						      return 3 - (this.maxRadius / 220) * 1.5; // 大圈速度慢，小圈速度快
+						    }
+						
+						    update() {
+						      this.radius += this.expandSpeed;
+						      this.alpha -= 0.01;
+						      if (this.alpha < 0) this.alpha = 0;
+						    }
+						    
+						    isDone() {
+						      return this.alpha <= 0 || this.radius >= this.maxRadius;
+						    }
+						  }
+						
+						  // 鼠标移动粒子效果
+						  document.addEventListener('mousemove', e => {
+						    for (let i = 0; i < 2; i++) {
+						      particles.push(new Particle(e.x + Math.random() * 10 - 5,
+						        e.y + Math.random() * 10 - 5));
+						    }
+						  });
+						
+						  // 点击生成动态尺寸波纹
+						  document.addEventListener('click', e => {
+						    // 生成3-5个不同尺寸的波纹
+						    const rippleCount = 3 + Math.floor(Math.random() * 3);
+						    for(let i = 0; i < rippleCount; i++) {
+						      const offset = 30 - Math.random() * 60;
+						      ripples.push(new Ripple(
+						        e.clientX + offset,
+						        e.clientY + offset
+						      ));
+						    }
+						  });
+						
+						  function animate() {
+						    ctx.clearRect(0, 0, canvas.width, canvas.height);
+						    
+						    // 背景渐变
+						    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+						    ctx.fillStyle = gradient;
+						    ctx.fillRect(0, 0, canvas.width, canvas.height);
+						
+						    // 更新粒子
+						    particles.forEach((particle, index) => {
+						      particle.update();
+						      ctx.fillStyle = particle.color;
+						      ctx.beginPath();
+						      ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+						      ctx.fill();
+						      if (particle.alpha <= 0) particles.splice(index, 1);
+						    });
+						
+						    // 绘制动态尺寸波纹
+						    ripples.forEach((ripple, index) => {
+						      ripple.update();
+						      
+						      // 多层波纹绘制
+						      const layers = [
+						        { offset: 0, width: ripple.lineWidth },
+						        { offset: 3, width: ripple.lineWidth * 0.7 },
+						        { offset: -2, width: ripple.lineWidth * 0.5 }
+						      ];
+						
+						      layers.forEach(layer => {
+						        ctx.beginPath();
+						        ctx.arc(
+						          ripple.x + layer.offset,
+						          ripple.y + layer.offset,
+						          Math.max(0, ripple.radius),
+						          0,
+						          Math.PI * 2
+						        );
+						        
+						        const gradient = ctx.createRadialGradient(
+						          ripple.x, ripple.y, 0,
+						          ripple.x, ripple.y, ripple.radius
+						        );
+						        gradient.addColorStop(0, `${ripple.color.replace('1)', `${ripple.alpha})`)}`);
+						        gradient.addColorStop(1, `${ripple.color.replace('1)', '0)')}`);
+						        
+						        ctx.strokeStyle = gradient;
+						        ctx.lineWidth = layer.width;
+						        ctx.stroke();
+						      });
+						
+						      if (ripple.isDone()) ripples.splice(index, 1);
+						    });
+						
+						    requestAnimationFrame(animate);
+						  }
+						  animate();
+						}
+						createParticleBackground();
+						        // 主题切换功能
+						      function toggleTheme() {
+						          const body = document.body;
+						          body.classList.toggle('dark-theme');
+						          
+						          // 保存用户偏好
+						          const isDark = body.classList.contains('dark-theme');
+						          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+						          
+						          // 更新按钮颜色
+						          updateButtonColor();
+						      }
+						
+						      // 更新按钮样式
+						      function updateButtonColor() {
+						          const themeButton = document.querySelector('.theme-toggle');
+						          themeButton.style.backgroundColor = getComputedStyle(document.body)
+						              .getPropertyValue('--primary');
+						      }
+						
+						      // 初始化主题
+						      function initTheme() {
+						          const savedTheme = localStorage.getItem('theme') || 'light';
+						          document.body.classList.toggle('dark-theme', savedTheme === 'dark');
+						          updateButtonColor();
+						      }
+						
+						      // 页面加载时初始化
+						      initTheme();
+		</script>
+	</body>
+
 </html>
