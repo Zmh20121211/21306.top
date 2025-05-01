@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 	<head>
-		<link rel="icon" href="favicon.ico">
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>全能网站导航</title>
+		<link rel="icon" href="favicon.ico">
 		<style>
 			:root {
 				--bg: #ffffff;
-				/* 改为纯白 */
 				--card-bg: rgba(255, 255, 255, 0.95);
 				--text: #2c3e50;
 				--primary: #3498db;
@@ -17,12 +17,52 @@
 
 			.dark-theme {
 				--bg: #000000;
-				/* 改为纯黑 */
 				--card-bg: rgba(50, 50, 50, 0.95);
 				--text: #ecf0f1;
 				--primary: #2ecc71;
 				--link-bg: rgba(30, 30, 30, 0.8);
 			}
+
+			#clock {
+				position: fixed;
+				top: 20px;
+				left: 20px;
+				z-index: 999;
+				padding: 12px 20px;
+				border-radius: 8px;
+				font-family: 'Courier New', monospace;
+				font-weight: 500;
+				backdrop-filter: blur(4px);
+				transition: all 0.3s ease;
+			}
+
+			.style {
+				background: var(--card-bg);
+				color: var(--primary);
+				border: 2px solid;
+				border-radius: 15px;
+				animation: borderGlow 2s infinite;
+			}
+
+			@keyframes gradientShift {
+				100% {
+					background-position: 100% 100%;
+				}
+			}
+
+			@keyframes neonPulse {
+				50% {
+					opacity: 0.2;
+				}
+			}
+
+			@keyframes borderGlow {
+				50% {
+					box-shadow: 0 0 20px var(--primary);
+					border-color: var(--primary);
+				}
+			}
+
 			body {
 				font-family: 'Segoe UI', system-ui, sans-serif;
 				line-height: 1.6;
@@ -41,11 +81,10 @@
 				position: fixed;
 				top: 20px;
 				right: -90%;
-				/* 修改此处 */
 				min-width: 60px;
 				height: 40px;
 				border-radius: 20px;
-				padding:12px;
+				padding: 12px;
 				border: none;
 				cursor: pointer;
 				background-color: var(--primary);
@@ -54,13 +93,10 @@
 				font-weight: 500;
 				box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 				transition: all 0.3s ease;
-				overflow: hidden;
 				position: relative;
 				transform: translateX(0);
-				/* 添加重置变换 */
 			}
 
-			/* 添加文字切换动画 */
 			.theme-toggle span {
 				position: absolute;
 				top: 50%;
@@ -113,7 +149,6 @@
 				top: 0;
 				left: 0;
 				z-index: -1;
-				/* 置于内容下方 */
 			}
 
 			.category {
@@ -123,7 +158,6 @@
 				margin-bottom: 20px;
 				box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 				backdrop-filter: blur(5px);
-				/* 毛玻璃效果 */
 			}
 
 			h1 {
@@ -185,11 +219,14 @@
 	</head>
 
 	<body>
+		<div id="clock" class="style"></div>
 		<button class="theme-toggle" aria-label="切换主题" onclick="toggleTheme()">
 			<span class="light-text">深色</span>
 			<span class="dark-text">浅色</span>
 		</button>
+
 		<h1>全能网站导航</h1>
+
 		<!-- 实用工具 -->
 		<div class="category">
 			<h2>🔧 实用工具</h2>
@@ -205,6 +242,7 @@
 				<a href="https://21306.top/file/clock/" target="_blank">在线时钟精简版</a>
 			</div>
 		</div>
+
 		<!-- AI工具 -->
 		<div class="category">
 			<h2>🤖 AI工具</h2>
@@ -213,8 +251,10 @@
 				<a href="https://yiyan.baidu.com/" target="_blank">文言一心AI</a>
 				<a href="https://t1s1gqtac2.feishu.cn/docx/FhR2dWHrooSOWNxG1MSc5JWknjc/" target="_blank">GPT综合文档</a>
 				<a href="https://t1s1gqtac2.feishu.cn/docx/GiZ8dXdcvoYFZ5xTvXOcyZuFnje/" target="_blank">Sora文档</a>
+				<a href="https://www.midjourney.com/" target="_blank">Midjourney AI绘画</a>
 			</div>
 		</div>
+
 		<!-- 开发者专区 -->
 		<div class="category">
 			<h2>👨💻 开发者专区</h2>
@@ -226,20 +266,26 @@
 				<a href="https://github.com/Wechat-ggGitHub/Awesome-GitHub-Repo/" target="_blank">Awesome仓库合集</a>
 			</div>
 		</div>
-		<!-- 资源下载 -->
+
+		<!-- 软件下载 -->
 		<div class="category">
-			<h2>📥 资源下载</h2>
+			<h2>💾 软件下载</h2>
 			<div class="links">
-				<a href="https://21306.top/file/ClassinVideo/" target="_blank">庄老师classin上课视频回放</a>
-				<a href="https://byrutgame.org/" target="_blank">俄罗斯破解站1</a>
-				<a href="https://rutracker.net/forum/index.php" target="_blank">俄罗斯破解站2</a>
-				<a href="https://freesteam.games/category/limited-time-free/" target="_blank">Steam限免情报</a>
-				<a href="https://get.2sb.org/" target="_blank">文件加速下载器</a>
-				<a href="https://gh-proxy.ygxz.in/" target="_blank">GitHub文件加速</a>
-				<a href="https://github.com/XiaoYouChR/Ghost-Downloader-3/" target="_blank">幽灵下载器</a>
-				<a href="https://downer.cc/" target="_blank">全平台视频下载器</a>
+				<a href="https://byrutgame.org/">俄罗斯破解站1</a>
+				<a href="https://rutracker.net/">俄罗斯破解站2</a>
+				<a href="https://massgrave.dev/">MAS激活工具</a>
 			</div>
 		</div>
+
+		<!-- 学习资源 -->
+		<div class="category">
+			<h2>🎓 学习资源</h2>
+			<div class="links">
+				<a href="https://21306.top/file/ClassinVideo/">课程视频回放</a>
+				<a href="https://www.52dianying.vip/">电影教学平台</a>
+			</div>
+		</div>
+
 		<!-- 影视资源 -->
 		<div class="category">
 			<h2>🎬 影视资源</h2>
@@ -249,6 +295,7 @@
 				<a href="https://subhd.tv/" target="_blank">SubHD字幕平台</a>
 			</div>
 		</div>
+
 		<!-- 游戏娱乐 -->
 		<div class="category">
 			<h2>🎮 游戏娱乐</h2>
@@ -260,6 +307,7 @@
 				<a href="https://html5.gamedistribution.com/rvvASMiM/9ee26ba4405c456094c70af7dc31a524/index.html" target="_blank">几何三角游戏</a>
 			</div>
 		</div>
+
 		<!-- 摸鱼专区 -->
 		<div class="category">
 			<h2>🐟 摸鱼专区</h2>
@@ -269,8 +317,10 @@
 				<a href="http://papertoilet.com/" target="_blank">一卷手纸模拟器</a>
 				<a href="https://www.meteorshowers.org/" target="_blank">实时流星雨观测</a>
 				<a href="https://proj.warmday.wang/answer/index.html" target="_blank">答案之书</a>
+				<a href="https://www.silkysmooth.com/">ASMR模拟器</a>
 			</div>
 		</div>
+
 		<!-- 硬件/网络 -->
 		<div class="category">
 			<h2>🔩 硬件/网络</h2>
@@ -281,6 +331,7 @@
 				<a href="https://dns.console.aliyun.com/#/dns/setting/21306.top/" target="_blank">阿里云DNS解析</a>
 			</div>
 		</div>
+
 		<!-- 特殊项目 -->
 		<div class="category">
 			<h2>🔗 特殊项目</h2>
@@ -291,26 +342,45 @@
 				<a href="https://similarsites.com/" target="_blank">相似网站发现</a>
 			</div>
 		</div>
+
 		<script>
-			// 修改后的主题切换函数
-			function toggleTheme() {
-			    const body = document.body;
-			    body.classList.toggle('dark-theme');
-			    
-			    // 保存用户偏好
-			    const isDark = body.classList.contains('dark-theme');
-			    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-			    
-			    // 更新按钮颜色
-			    updateButtonColor();
+			// 时钟功能
+			function updateClock() {
+				const now = new Date();
+				const hours = now.getHours().toString().padStart(2, '0');
+				const minutes = now.getMinutes().toString().padStart(2, '0');
+				const seconds = now.getSeconds().toString().padStart(2, '0');
+				const milliseconds = now.getMilliseconds().toString().padStart(3, '0');
+				
+				document.getElementById('clock').innerHTML = 
+					`${hours}:${minutes}:<span style="font-size:0.9em">${seconds}.${milliseconds}</span>`;
 			}
 			
-			// 初始化主题时添加文字状态
-			function initTheme() {
-			    const savedTheme = localStorage.getItem('theme') || 'light';
-			    document.body.classList.toggle('dark-theme', savedTheme === 'dark');
-			    updateButtonColor();
+			setInterval(updateClock, 50);
+			updateClock();
+			
+			// 主题切换功能
+			function toggleTheme() {
+				const body = document.body;
+				body.classList.toggle('dark-theme');
+				const isDark = body.classList.contains('dark-theme');
+				localStorage.setItem('theme', isDark ? 'dark' : 'light');
+				updateButtonColor();
 			}
+			
+			function updateButtonColor() {
+				const themeButton = document.querySelector('.theme-toggle');
+				themeButton.style.backgroundColor = getComputedStyle(document.body)
+					.getPropertyValue('--primary');
+			}
+			
+			function initTheme() {
+				const savedTheme = localStorage.getItem('theme') || 'light';
+				document.body.classList.toggle('dark-theme', savedTheme === 'dark');
+				updateButtonColor();
+			}
+			
+			initTheme();
 						// 粒子背景生成脚本（动态尺寸波纹）
 						function createParticleBackground() {
 						  const canvas = document.createElement('canvas');
