@@ -27,13 +27,12 @@
 				position: fixed;
 				top: 20px;
 				left: 20px;
-				z-index: 999;
 				padding: 12px 20px;
 				border-radius: 8px;
-				font-family: 'Courier New', monospace;
+				font-family: 'Orbitron', sans-serif;
 				font-weight: 500;
-				backdrop-filter: blur(4px);
 				transition: all 0.3s ease;
+				white-space: nowrap;
 			}
 
 			.style {
@@ -257,7 +256,7 @@
 
 		<!-- 开发者专区 -->
 		<div class="category">
-			<h2>👨💻 开发者专区</h2>
+			<h2>💻 开发者专区</h2>
 			<div class="links">
 				<a href="https://learn.microsoft.com/zh-cn/" target="_blank">Windows官方教程</a>
 				<a href="https://developercommunity.visualstudio.com/home/" target="_blank">微软开发者社区</a>
@@ -281,8 +280,7 @@
 		<div class="category">
 			<h2>🎓 学习资源</h2>
 			<div class="links">
-				<a href="https://21306.top/file/ClassinVideo/">课程视频回放</a>
-				<a href="https://www.52dianying.vip/">电影教学平台</a>
+				<a href="https://21306.top/file/ClassinVideo/">Classin课程视频回放</a>
 			</div>
 		</div>
 
@@ -333,7 +331,7 @@
 		<div class="category">
 			<h2>🔗 特殊项目</h2>
 			<div class="links">
-				<a href="https://www.21306.top/" target="_blank">21306.top主页</a>
+				<a href="https://21306.top/" target="_blank">21306.top主页</a>
 				<a href="https://github.com/Zmh20121211/21306.top/" target="_blank">21306项目源码</a>
 				<a href="https://massgrave.dev/" target="_blank">MAS Windows激活工具</a>
 				<a href="https://similarsites.com/" target="_blank">相似网站发现工具</a>
@@ -341,218 +339,227 @@
 		</div>
 
 		<script>
-			// 时钟功能
+			// 修改后的时钟功能
 			function updateClock() {
-				const now = new Date();
-				const hours = now.getHours().toString().padStart(2, '0');
-				const minutes = now.getMinutes().toString().padStart(2, '0');
-				const seconds = now.getSeconds().toString().padStart(2, '0');
-				const milliseconds = now.getMilliseconds().toString().padStart(3, '0');
-				
-				document.getElementById('clock').innerHTML = 
-					`${hours}:${minutes}:<span style="font-size:0.9em">${seconds}.${milliseconds}</span>`;
+			    const now = new Date();
+			    // 日期部分
+			    const year = now.getFullYear();
+			    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+			    const day = now.getDate().toString().padStart(2, '0');
+			    // 时间部分
+			    const hours = now.getHours().toString().padStart(2, '0');
+			    const minutes = now.getMinutes().toString().padStart(2, '0');
+			    const seconds = now.getSeconds().toString().padStart(2, '0');
+			    const milliseconds = now.getMilliseconds().toString().padStart(3, '0');
+			
+			    document.getElementById('clock').innerHTML = `
+			        <div style="display: flex; flex-direction: column; line-height: 1.2;">
+			            <span style="font-size: 0.85em; opacity: 0.9;">${year}年${month}月${day}日</span>
+			            <span>${hours}:${minutes}:<span style="font-size:0.9em">${seconds}.${milliseconds}</span></span>
+			        </div>
+			    `;
 			}
-			
-			setInterval(updateClock, 50);
-			updateClock();
-			
-			// 主题切换功能
-			function toggleTheme() {
-				const body = document.body;
-				body.classList.toggle('dark-theme');
-				const isDark = body.classList.contains('dark-theme');
-				localStorage.setItem('theme', isDark ? 'dark' : 'light');
-				updateButtonColor();
-			}
-			
-			function updateButtonColor() {
-				const themeButton = document.querySelector('.theme-toggle');
-				themeButton.style.backgroundColor = getComputedStyle(document.body)
-					.getPropertyValue('--primary');
-			}
-			
-			function initTheme() {
-				const savedTheme = localStorage.getItem('theme') || 'light';
-				document.body.classList.toggle('dark-theme', savedTheme === 'dark');
-				updateButtonColor();
-			}
-			
-			initTheme();
-						// 粒子背景生成脚本（动态尺寸波纹）
-						function createParticleBackground() {
-						  const canvas = document.createElement('canvas');
-						  const ctx = canvas.getContext('2d');
-						  canvas.id = 'bg-canvas';
-						  canvas.width = window.innerWidth;
-						  canvas.height = window.innerHeight;
-						  document.body.prepend(canvas);
 						
-						  const particles = [];
-						  const ripples = [];
+						setInterval(updateClock, 50);
+						updateClock();
 						
-						  // 粒子类
-						  class Particle {
-						    constructor(x, y) {
-						      this.x = x;
-						      this.y = y;
-						      this.size = Math.random() * 2 + 1;
-						      this.speedX = Math.random() * 2 - 1;
-						      this.speedY = Math.random() * 2 - 1;
-						      this.alpha = 1;
-						      this.color = `hsla(${200 + Math.random() * 60}, 40%, 60%, ${this.alpha})`;
-						    }
-						    update() {
-						      this.x += this.speedX;
-						      this.y += this.speedY;
-						      this.alpha -= 0.008;
-						      this.size *= 0.98;
-						    }
-						  }
-						
-						  // 动态尺寸波纹类
-						  class Ripple {
-						    constructor(x, y) {
-						      this.x = x;
-						      this.y = y;
-						      this.radius = 0;
-						      this.maxRadius = this.generateRandomSize(); // 动态尺寸生成
-						      this.color = `hsla(${Math.random() * 360}, 85%, 65%, 1)`;
-						      this.alpha = 1;
-						      this.expandSpeed = this.calculateExpandSpeed(); // 速度与尺寸关联
-						      this.lineWidth = 4 + Math.random() * 4;
-						    }
-						    
-						    // 生成随机尺寸（80-220px）
-						    generateRandomSize() {
-						      const sizes = [80, 120, 160, 200];
-						      return sizes[Math.floor(Math.random() * sizes.length)] + Math.random() * 40;
-						    }
-						    
-						    // 根据尺寸计算扩散速度
-						    calculateExpandSpeed() {
-						      return 3 - (this.maxRadius / 220) * 1.5; // 大圈速度慢，小圈速度快
-						    }
-						
-						    update() {
-						      this.radius += this.expandSpeed;
-						      this.alpha -= 0.01;
-						      if (this.alpha < 0) this.alpha = 0;
-						    }
-						    
-						    isDone() {
-						      return this.alpha <= 0 || this.radius >= this.maxRadius;
-						    }
-						  }
-						
-						  // 鼠标移动粒子效果
-						  document.addEventListener('mousemove', e => {
-						    for (let i = 0; i < 2; i++) {
-						      particles.push(new Particle(e.x + Math.random() * 10 - 5,
-						        e.y + Math.random() * 10 - 5));
-						    }
-						  });
-						
-						  // 点击生成动态尺寸波纹
-						  document.addEventListener('click', e => {
-						    // 生成3-5个不同尺寸的波纹
-						    const rippleCount = 3 + Math.floor(Math.random() * 3);
-						    for(let i = 0; i < rippleCount; i++) {
-						      const offset = 30 - Math.random() * 60;
-						      ripples.push(new Ripple(
-						        e.clientX + offset,
-						        e.clientY + offset
-						      ));
-						    }
-						  });
-						
-						  function animate() {
-						    ctx.clearRect(0, 0, canvas.width, canvas.height);
-						    
-						    // 背景渐变
-						    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-						    ctx.fillStyle = gradient;
-						    ctx.fillRect(0, 0, canvas.width, canvas.height);
-						
-						    // 更新粒子
-						    particles.forEach((particle, index) => {
-						      particle.update();
-						      ctx.fillStyle = particle.color;
-						      ctx.beginPath();
-						      ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-						      ctx.fill();
-						      if (particle.alpha <= 0) particles.splice(index, 1);
-						    });
-						
-						    // 绘制动态尺寸波纹
-						    ripples.forEach((ripple, index) => {
-						      ripple.update();
-						      
-						      // 多层波纹绘制
-						      const layers = [
-						        { offset: 0, width: ripple.lineWidth },
-						        { offset: 3, width: ripple.lineWidth * 0.7 },
-						        { offset: -2, width: ripple.lineWidth * 0.5 }
-						      ];
-						
-						      layers.forEach(layer => {
-						        ctx.beginPath();
-						        ctx.arc(
-						          ripple.x + layer.offset,
-						          ripple.y + layer.offset,
-						          Math.max(0, ripple.radius),
-						          0,
-						          Math.PI * 2
-						        );
-						        
-						        const gradient = ctx.createRadialGradient(
-						          ripple.x, ripple.y, 0,
-						          ripple.x, ripple.y, ripple.radius
-						        );
-						        gradient.addColorStop(0, `${ripple.color.replace('1)', `${ripple.alpha})`)}`);
-						        gradient.addColorStop(1, `${ripple.color.replace('1)', '0)')}`);
-						        
-						        ctx.strokeStyle = gradient;
-						        ctx.lineWidth = layer.width;
-						        ctx.stroke();
-						      });
-						
-						      if (ripple.isDone()) ripples.splice(index, 1);
-						    });
-						
-						    requestAnimationFrame(animate);
-						  }
-						  animate();
+						// 主题切换功能
+						function toggleTheme() {
+							const body = document.body;
+							body.classList.toggle('dark-theme');
+							const isDark = body.classList.contains('dark-theme');
+							localStorage.setItem('theme', isDark ? 'dark' : 'light');
+							updateButtonColor();
 						}
-						createParticleBackground();
-						        // 主题切换功能
-						      function toggleTheme() {
-						          const body = document.body;
-						          body.classList.toggle('dark-theme');
-						          
-						          // 保存用户偏好
-						          const isDark = body.classList.contains('dark-theme');
-						          localStorage.setItem('theme', isDark ? 'dark' : 'light');
-						          
-						          // 更新按钮颜色
-						          updateButtonColor();
-						      }
 						
-						      // 更新按钮样式
-						      function updateButtonColor() {
-						          const themeButton = document.querySelector('.theme-toggle');
-						          themeButton.style.backgroundColor = getComputedStyle(document.body)
-						              .getPropertyValue('--primary');
-						      }
+						function updateButtonColor() {
+							const themeButton = document.querySelector('.theme-toggle');
+							themeButton.style.backgroundColor = getComputedStyle(document.body)
+								.getPropertyValue('--primary');
+						}
 						
-						      // 初始化主题
-						      function initTheme() {
-						          const savedTheme = localStorage.getItem('theme') || 'light';
-						          document.body.classList.toggle('dark-theme', savedTheme === 'dark');
-						          updateButtonColor();
-						      }
+						function initTheme() {
+							const savedTheme = localStorage.getItem('theme') || 'light';
+							document.body.classList.toggle('dark-theme', savedTheme === 'dark');
+							updateButtonColor();
+						}
 						
-						      // 页面加载时初始化
-						      initTheme();
+						initTheme();
+									// 粒子背景生成脚本（动态尺寸波纹）
+									function createParticleBackground() {
+									  const canvas = document.createElement('canvas');
+									  const ctx = canvas.getContext('2d');
+									  canvas.id = 'bg-canvas';
+									  canvas.width = window.innerWidth;
+									  canvas.height = window.innerHeight;
+									  document.body.prepend(canvas);
+									
+									  const particles = [];
+									  const ripples = [];
+									
+									  // 粒子类
+									  class Particle {
+									    constructor(x, y) {
+									      this.x = x;
+									      this.y = y;
+									      this.size = Math.random() * 2 + 1;
+									      this.speedX = Math.random() * 2 - 1;
+									      this.speedY = Math.random() * 2 - 1;
+									      this.alpha = 1;
+									      this.color = `hsla(${200 + Math.random() * 60}, 40%, 60%, ${this.alpha})`;
+									    }
+									    update() {
+									      this.x += this.speedX;
+									      this.y += this.speedY;
+									      this.alpha -= 0.008;
+									      this.size *= 0.98;
+									    }
+									  }
+									
+									  // 动态尺寸波纹类
+									  class Ripple {
+									    constructor(x, y) {
+									      this.x = x;
+									      this.y = y;
+									      this.radius = 0;
+									      this.maxRadius = this.generateRandomSize(); // 动态尺寸生成
+									      this.color = `hsla(${Math.random() * 360}, 85%, 65%, 1)`;
+									      this.alpha = 1;
+									      this.expandSpeed = this.calculateExpandSpeed(); // 速度与尺寸关联
+									      this.lineWidth = 4 + Math.random() * 4;
+									    }
+									    
+									    // 生成随机尺寸（80-220px）
+									    generateRandomSize() {
+									      const sizes = [80, 120, 160, 200];
+									      return sizes[Math.floor(Math.random() * sizes.length)] + Math.random() * 40;
+									    }
+									    
+									    // 根据尺寸计算扩散速度
+									    calculateExpandSpeed() {
+									      return 3 - (this.maxRadius / 220) * 1.5; // 大圈速度慢，小圈速度快
+									    }
+									
+									    update() {
+									      this.radius += this.expandSpeed;
+									      this.alpha -= 0.01;
+									      if (this.alpha < 0) this.alpha = 0;
+									    }
+									    
+									    isDone() {
+									      return this.alpha <= 0 || this.radius >= this.maxRadius;
+									    }
+									  }
+									
+									  // 鼠标移动粒子效果
+									  document.addEventListener('mousemove', e => {
+									    for (let i = 0; i < 2; i++) {
+									      particles.push(new Particle(e.x + Math.random() * 10 - 5,
+									        e.y + Math.random() * 10 - 5));
+									    }
+									  });
+									
+									  // 点击生成动态尺寸波纹
+									  document.addEventListener('click', e => {
+									    // 生成3-5个不同尺寸的波纹
+									    const rippleCount = 3 + Math.floor(Math.random() * 3);
+									    for(let i = 0; i < rippleCount; i++) {
+									      const offset = 30 - Math.random() * 60;
+									      ripples.push(new Ripple(
+									        e.clientX + offset,
+									        e.clientY + offset
+									      ));
+									    }
+									  });
+									
+									  function animate() {
+									    ctx.clearRect(0, 0, canvas.width, canvas.height);
+									    
+									    // 背景渐变
+									    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+									    ctx.fillStyle = gradient;
+									    ctx.fillRect(0, 0, canvas.width, canvas.height);
+									
+									    // 更新粒子
+									    particles.forEach((particle, index) => {
+									      particle.update();
+									      ctx.fillStyle = particle.color;
+									      ctx.beginPath();
+									      ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+									      ctx.fill();
+									      if (particle.alpha <= 0) particles.splice(index, 1);
+									    });
+									
+									    // 绘制动态尺寸波纹
+									    ripples.forEach((ripple, index) => {
+									      ripple.update();
+									      
+									      // 多层波纹绘制
+									      const layers = [
+									        { offset: 0, width: ripple.lineWidth },
+									        { offset: 3, width: ripple.lineWidth * 0.7 },
+									        { offset: -2, width: ripple.lineWidth * 0.5 }
+									      ];
+									
+									      layers.forEach(layer => {
+									        ctx.beginPath();
+									        ctx.arc(
+									          ripple.x + layer.offset,
+									          ripple.y + layer.offset,
+									          Math.max(0, ripple.radius),
+									          0,
+									          Math.PI * 2
+									        );
+									        
+									        const gradient = ctx.createRadialGradient(
+									          ripple.x, ripple.y, 0,
+									          ripple.x, ripple.y, ripple.radius
+									        );
+									        gradient.addColorStop(0, `${ripple.color.replace('1)', `${ripple.alpha})`)}`);
+									        gradient.addColorStop(1, `${ripple.color.replace('1)', '0)')}`);
+									        
+									        ctx.strokeStyle = gradient;
+									        ctx.lineWidth = layer.width;
+									        ctx.stroke();
+									      });
+									
+									      if (ripple.isDone()) ripples.splice(index, 1);
+									    });
+									
+									    requestAnimationFrame(animate);
+									  }
+									  animate();
+									}
+									createParticleBackground();
+									        // 主题切换功能
+									      function toggleTheme() {
+									          const body = document.body;
+									          body.classList.toggle('dark-theme');
+									          
+									          // 保存用户偏好
+									          const isDark = body.classList.contains('dark-theme');
+									          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+									          
+									          // 更新按钮颜色
+									          updateButtonColor();
+									      }
+									
+									      // 更新按钮样式
+									      function updateButtonColor() {
+									          const themeButton = document.querySelector('.theme-toggle');
+									          themeButton.style.backgroundColor = getComputedStyle(document.body)
+									              .getPropertyValue('--primary');
+									      }
+									
+									      // 初始化主题
+									      function initTheme() {
+									          const savedTheme = localStorage.getItem('theme') || 'light';
+									          document.body.classList.toggle('dark-theme', savedTheme === 'dark');
+									          updateButtonColor();
+									      }
+									
+									      // 页面加载时初始化
+									      initTheme();
 		</script>
 	</body>
 
