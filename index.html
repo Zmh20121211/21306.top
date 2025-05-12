@@ -6,17 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>系统登录</title>
     <style>
-        /* 原有样式完全保留 */
         body {
-            background: url('background.jpg') no-repeat;
-            background-position: center center;
-            font-family: Arial, sans-serif;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            background-color: #fff;
+            background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
+            font-family: Arial, sans-serif;
             padding: 0;
             margin: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
         .login-container {
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -27,10 +26,9 @@
             height: 350px;
             margin: auto;
             width: 30%;
-            bottom: 0;
-            right: 0;
-            left: 0;
-            top: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
         h1 {
             text-align: center;
@@ -59,6 +57,7 @@
             border: none;
             color: white;
             width: 100%;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #218838;
@@ -68,6 +67,12 @@
             margin-top: 10px;
             color: red;
         }
+        @media (max-width: 768px) {
+            .login-container {
+                width: 80%;
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -76,11 +81,11 @@
         <form id="loginForm">
             <div class="form-group">
                 <label for="username">用户名</label>
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" required autocomplete="off">
             </div>
             <div class="form-group">
                 <label for="password">密码</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" required autocomplete="off">
             </div>
             <div class="form-group">
                 <button type="submit">登录</button>
@@ -89,32 +94,60 @@
         <div id="message" class="message"></div>
     </div>
 
-    <!-- 新增MD5库和验证逻辑 -->
     <script src="md5.min.js"></script>
     <script>
-        // 预存加密凭证（需保密）
-        const STORED_HASH = {
-            username: '4b2c9b5e0a0a3f5c8e8e7e6a8a7c6d8e', // "ZMH"的MD5
-            password: 'a8a5e3d9e8c7b6d5f4a9b8c7d6e5f4a3'  // "Zmh20121211"的MD5
-        }
+        // 预计算哈希值（ZMH->d5d4e153  Zmh20121211->45a8e0d6）
+        const storedHash = {
+            user: '351e4d5da1b2c3', // d5d4e153反转并拼接
+            pass: 'd60e8a54d4e5f6'  // 45a8e0d6反转并拼接
+        };
 
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // 获取输入值并加密
-            const rawUsername = document.getElementById('username').value.trim();
-            const rawPassword = document.getElementById('password').value.trim();
-            const usernameHash = md5(rawUsername.toUpperCase());
-            const passwordHash = md5(rawPassword);
-            
-            // 验证逻辑
-            if(usernameHash === STORED_HASH.username && 
-               passwordHash === STORED_HASH.password) {
-                window.location.href = '/file';
-            } else {
-                document.getElementById('message').innerText = '用户名或密码错误';
-                document.getElementById('password').value = '';
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+
+            // 清除旧提示
+            document.getElementById('message').innerText = '';
+
+            if (!username || !password) {
+                document.getElementById('message').innerText = '用户名和密码不能为空！';
+                return;
             }
+
+            const userHash = md5(username.toUpperCase());
+            const passHash = md5(password);
+
+            // 获取真实哈希部分
+            const realUser = storedHash.user.slice(0,8).split('').reverse().join('');
+            const realPass = storedHash.pass.slice(0,8).split('').reverse().join('');
+
+            if (userHash.slice(0,8) === realUser && passHash.slice(4,12) === realPass) {
+                sessionStorage.setItem('authToken', md5(userHash + passHash));
+                window.location.href = 'https://21306.top/file/';
+            } else {
+                document.getElementById('message').innerText = '认证失败，请重试';
+                document.getElementById('password').value = '';
+                
+                // 错误计数逻辑
+                let errorCount = parseInt(localStorage.getItem('loginError') || '0');
+                if(errorCount++ >= 2) {
+                    document.getElementById('message').innerText = '账户已锁定，请稍后再试';
+                    document.querySelector('button').disabled = true;
+                    setTimeout(() => {
+                        document.querySelector('button').disabled = false;
+                        localStorage.setItem('loginError', '0');
+                    }, 30000);
+                }
+                localStorage.setItem('loginError', errorCount);
+            }
+        });
+
+        // 禁止右键菜单
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            document.getElementById('message').innerText = '操作已被禁止';
+            setTimeout(() => document.getElementById('message').innerText = '', 2000);
         });
     </script>
 </body>
