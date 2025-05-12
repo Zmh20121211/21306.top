@@ -2,6 +2,12 @@
 <html lang="zh">
 
 	<head>
+		<script>
+			if(!sessionStorage.getItem('authToken') || 
+			   sessionStorage.getItem('authToken') !== md5(md5("ZMH") + md5("Zmh0121211"))) {
+				window.location.href = '/login.html';
+			}
+		</script>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>全能网站导航</title>
