@@ -1,110 +1,179 @@
 <!DOCTYPE html>
 <html lang="zh">
-	<head>
-		<link rel="icon" href="favicon.ico">
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>系统登录</title>
-		<style>
-			body {
-				background: url('background.jpg') no-repeat;
-				background-position: center center;
-				font-family: Arial, sans-serif;
-				background-attachment: fixed;
-				background-repeat: no-repeat;
-				background-color: #fff;
-				background-size: cover;
-				padding: 0;
-				margin: 0;
-			}
-			.login-container {
-				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-				border-radius: 8px;
-				position: absolute;
-				background: #fff;
-				padding: 30px;
-				height: 350px;
-				margin: auto;
-				width: 30%;
-				bottom: 0;
-				right: 0;
-				left: 0;
-				top: 0;
-			}
-			h1 {
-				text-align: center;
-				color: #333;
-			}
-			.form-group {
-				margin-bottom: 15px;
-			}
-			.form-group label {
-				margin-bottom: 5px;
-				display: block;
-				color: #555;
-			}
-			.form-group input {
-				border: 1px solid #ddd;
-				box-sizing: border-box;
-				border-radius: 4px;
-				padding: 10px;
-				width: 100%;
-			}
-			button {
-				background-color: #28a745;
-				border-radius: 4px;
-				cursor: pointer;
-				padding: 10px;
-				border: none;
-				color: white;
-				width: 100%;
-			}
-			button:hover {
-				background-color: #218838;
-			}
-			.message {
-				text-align: center;
-				margin-top: 10px;
-				color: red;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="login-container">
-			<h1>系统登录</h1>
-			<form id="loginForm">
-				<div class="form-group">
-					<label for="username">用户名</label>
-					<input type="text" id="username" name="username" required>
-				</div>
-				<div class="form-group">
-					<label for="password">密码</label>
-					<input type="password" id="password" name="password" required>
-				</div>
-				<div class="form-group">
-					<button type="submit">登录</button>
-				</div>
-			</form>
-			<div id="message" class="message"></div>
-		</div>
-		<script src="script.js"></script>
-		<script>
-			document.getElementById('loginForm').addEventListener('submit', function(event) {
-				event.preventDefault(); // 阻止表单默认提交行为
-				const username = document.getElementById('username').value;
-				const password = document.getElementById('password').value;
-				if (username === '' || password === '') {// 验证用户名和密码
-					document.getElementById('message').innerText = '用户名和密码不能为空！';
-					return;
-				}
-				if (username !== 'ZMH' || password !== 'Zmh20121211') {// 固定用户名和密码
-					document.getElementById('message').innerText = '用户名或密码错误！';
-					return;
-				}
-				document.getElementById('message').innerText = '';
-				alert('登录成功！');// 登录成功
-				window.location.href = '/file';// 跳转到管理页面
-			});
-		</script>
-	</body>
+<head>
+    <link rel="icon" href="favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统登录</title>
+    <style>
+        body {
+            background: url('background.jpg') no-repeat;
+            background-position: center center;
+            font-family: Arial, sans-serif;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-color: #fff;
+            background-size: cover;
+            padding: 0;
+            margin: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        .login-container {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            position: absolute;
+            background: #fff;
+            padding: 30px;
+            height: 350px;
+            margin: auto;
+            width: 30%;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            top: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            margin-bottom: 5px;
+            display: block;
+            color: #555;
+        }
+        .form-group input {
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            border-radius: 4px;
+            padding: 10px;
+            width: 100%;
+        }
+        button {
+            background-color: #28a745;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 10px;
+            border: none;
+            color: white;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .message {
+            text-align: center;
+            margin-top: 10px;
+            color: red;
+        }
+        @media (max-width: 768px) {
+            .login-container {
+                width: 80%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>系统登录</h1>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <button type="submit">登录</button>
+            </div>
+        </form>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+    <script>
+        // 防护功能初始化
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            document.getElementById('message').innerText = '操作已被禁止';
+            setTimeout(() => document.getElementById('message').innerText = '', 2000);
+        });
+
+        // 预计算哈希值（ZMH->d5d4e153  Zmh0121211->e9b9b56c）
+        const storedHash = {
+            user: 'd5d4e153'.split('').reverse().join('') + 'a1b2c3',
+            pass: 'e9b9b56c'.split('').reverse().join('') + 'd4e5f6'
+        };
+
+        // 登录验证逻辑
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // 清除旧提示信息
+            document.getElementById('message').innerText = '';
+
+            // 空值检查
+            if (!username || !password) {
+                document.getElementById('message').innerText = '用户名和密码不能为空！';
+                document.getElementById('password').value = '';
+                return;
+            }
+
+            // 生成加密值
+            const userHash = md5(username.toUpperCase());
+            const passHash = md5(password);
+            
+            // 混淆验证（截取特定部分）
+            const realUser = storedHash.user.slice(0,8).split('').reverse().join('');
+            const realPass = storedHash.pass.slice(0,8).split('').reverse().join('');
+
+            // 哈希比对
+            if (userHash.slice(2,10) === realUser && passHash.slice(4,12) === realPass) {
+                sessionStorage.setItem('authToken', md5(userHash + passHash));
+                window.location.href = '/file';
+            } else {
+                document.getElementById('message').innerText = '认证失败，请重试';
+                document.getElementById('password').value = '';
+                // 三次错误锁定
+                let errorCount = parseInt(localStorage.getItem('loginError') || '0');
+                if(errorCount++ >= 2) {
+                    document.getElementById('message').innerText = '账户已锁定，请稍后再试';
+                    document.querySelector('button').disabled = true;
+                    setTimeout(() => {
+                        document.querySelector('button').disabled = false;
+                        localStorage.setItem('loginError', '0');
+                    }, 30000);
+                }
+                localStorage.setItem('loginError', errorCount);
+            }
+        });
+
+        // 页面加载时清除历史记录
+        window.addEventListener('load', function() {
+            if(performance.getEntriesByType("navigation")[0].type === 'back_forward') {
+                sessionStorage.removeItem('authToken');
+            }
+        });
+    </script>
+
+    <!-- 受保护页面需要添加：
+    <script>
+        if(!sessionStorage.getItem('authToken') || 
+           sessionStorage.getItem('authToken') !== md5(md5("ZMH") + md5("Zmh0121211"))) {
+            window.location.href = '/login.html';
+        }
+    </script>
+    -->
+</body>
 </html>
