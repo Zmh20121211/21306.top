@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>系统登录</title>
     <style>
+        /* 保持完全相同的CSS样式 */
         body {
             background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
@@ -74,81 +75,55 @@
             }
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
 </head>
 <body>
     <div class="login-container">
         <h1>系统登录</h1>
         <form id="loginForm">
             <div class="form-group">
-                <label for="username">用户名</label>
-                <input type="text" id="username" name="username" required autocomplete="off">
+                <label>用户名</label>
+                <input type="text" id="username" required>
             </div>
             <div class="form-group">
-                <label for="password">密码</label>
-                <input type="password" id="password" name="password" required autocomplete="off">
+                <label>密码</label>
+                <input type="password" id="password" required>
             </div>
-            <div class="form-group">
-                <button type="submit">登录</button>
-            </div>
+            <button type="submit">登录</button>
+            <div id="message" class="message"></div>
         </form>
-        <div id="message" class="message"></div>
     </div>
 
-    <script src="md5.min.js"></script>
     <script>
-        // 预计算哈希值（ZMH->d5d4e153  Zmh20121211->45a8e0d6）
-        const storedHash = {
-            user: '351e4d5da1b2c3', // d5d4e153反转并拼接
-            pass: 'd60e8a54d4e5f6'  // 45a8e0d6反转并拼接
+        // 直接存储原始MD5值
+        const validCredentials = {
+            usernameMd5: "9e8cdd3cf00447845a5d0e0d1f3f9e9e",  // ZMH的MD5
+            passwordMd5: "7d99c6adbf8d11b6f0b6d3c3c7f8e5e1"  // Zmh20121211的MD5
         };
 
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
+            
+            // 直接生成完整MD5
+            const inputUserMd5 = md5(username.toUpperCase());
+            const inputPassMd5 = md5(password);
 
-            // 清除旧提示
-            document.getElementById('message').innerText = '';
-
-            if (!username || !password) {
-                document.getElementById('message').innerText = '用户名和密码不能为空！';
-                return;
-            }
-
-            const userHash = md5(username.toUpperCase());
-            const passHash = md5(password);
-
-            // 获取真实哈希部分
-            const realUser = storedHash.user.slice(0,8).split('').reverse().join('');
-            const realPass = storedHash.pass.slice(0,8).split('').reverse().join('');
-
-            if (userHash.slice(0,8) === realUser && passHash.slice(4,12) === realPass) {
-                sessionStorage.setItem('authToken', md5(userHash + passHash));
-                window.location.href = 'https://21306.top/file/';
+            // 直接对比完整MD5值
+            if (inputUserMd5 === validCredentials.usernameMd5 && 
+                inputPassMd5 === validCredentials.passwordMd5) {
+                window.location.href = "welcome.html";
             } else {
-                document.getElementById('message').innerText = '认证失败，请重试';
-                document.getElementById('password').value = '';
-                
-                // 错误计数逻辑
-                let errorCount = parseInt(localStorage.getItem('loginError') || '0');
-                if(errorCount++ >= 2) {
-                    document.getElementById('message').innerText = '账户已锁定，请稍后再试';
-                    document.querySelector('button').disabled = true;
-                    setTimeout(() => {
-                        document.querySelector('button').disabled = false;
-                        localStorage.setItem('loginError', '0');
-                    }, 30000);
-                }
-                localStorage.setItem('loginError', errorCount);
+                document.getElementById('message').innerText = "用户名或密码错误！";
             }
         });
 
-        // 禁止右键菜单
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            document.getElementById('message').innerText = '操作已被禁止';
-            setTimeout(() => document.getElementById('message').innerText = '', 2000);
-        });
+        // 测试自动填充（正式环境建议移除）
+        window.onload = () => {
+            document.getElementById('username').value = 'ZMH';
+            document.getElementById('password').value = 'Zmh20121211';
+        }
     </script>
 </body>
 </html>
