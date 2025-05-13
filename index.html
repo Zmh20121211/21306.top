@@ -1,199 +1,110 @@
 <!DOCTYPE html>
 <html lang="zh">
-<head>
-    <link rel="icon" href="./favicon.png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>系统登录</title>
-    <style>
-        /* 全局样式 */
-        body {
-            background: url('background.jpg') no-repeat;
-            background-position: center center;
-            font-family: Arial, sans-serif;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            background-color: #fff;
-            background-size: cover;
-            padding: 0;
-            margin: 0;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        /* 登录容器 */
-        .login-container {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            position: absolute;
-            background: #fff;
-            padding: 30px;
-            height: 350px;
-            margin: auto;
-            width: 30%;
-            bottom: 0;
-            right: 0;
-            left: 0;
-            top: 0;
-        }
-
-        /* 标题样式 */
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-        }
-
-        /* 表单组 */
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            margin-bottom: 8px;
-            display: block;
-            color: #555;
-            font-size: 14px;
-        }
-
-        .form-group input {
-            border: 1px solid #ddd;
-            box-sizing: border-box;
-            border-radius: 4px;
-            padding: 12px;
-            width: 100%;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus {
-            border-color: #28a745;
-            outline: none;
-        }
-
-        /* 按钮样式 */
-        button {
-            background-color: #28a745;
-            border-radius: 4px;
-            cursor: pointer;
-            padding: 12px;
-            border: none;
-            color: white;
-            width: 100%;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #218838;
-        }
-
-        /* 消息提示 */
-        .message {
-            text-align: center;
-            margin-top: 15px;
-            color: #dc3545;
-            font-size: 14px;
-            height: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="login-container">
-        <h1>欢迎登录管理系统</h1>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="username">用户名</label>
-                <input type="text" id="username" name="username" 
-                       placeholder="请输入用户名" required>
-            </div>
-            <div class="form-group">
-                <label for="password">密码</label>
-                <input type="password" id="password" name="password"
-                       placeholder="请输入密码" required>
-            </div>
-            <div class="form-group">
-                <button type="submit">立即登录</button>
-            </div>
-        </form>
-        <div id="message" class="message"></div>
-    </div>
-
-    <script>
-        // 安全防护设置
-        (function() {
-            // 禁用右键菜单
-            document.addEventListener('contextmenu', function(e) {
-                e.preventDefault();
-                return false;
-            });
-
-            // 禁用开发者工具
-            document.onkeydown = function(e) {
-                if (e.keyCode === 123 || // F12
-                    (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I
-                    (e.ctrlKey && e.keyCode === 85) // Ctrl+U
-                {
-                    alert('访问被禁止');
-                    return false;
-                }
-            };
-
-            // 禁用文本选择（增强）
-            document.onselectstart = function() {
-                return false;
-            };
-        })();
-
-        // 登录验证逻辑
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const messageEl = document.getElementById('message');
-
-            // 输入验证
-            if (!username || !password) {
-                messageEl.innerText = '用户名和密码不能为空！';
-                return;
-            }
-
-            // 模拟登录验证
-            if (username !== 'ZMH' || password !== 'Zmh20121211') {
-                messageEl.innerText = '用户名或密码错误！';
-                // 清空密码框
-                document.getElementById('password').value = '';
-                // 抖动动画
-                loginContainer.classList.add('shake');
-                setTimeout(() => {
-                    loginContainer.classList.remove('shake');
-                }, 500);
-                return;
-            }
-
-            // 登录成功处理
-            messageEl.innerText = '';
-            alert('验证通过，正在跳转...');
-            window.location.href = './file';
-        });
-
-        // 抖动动画样式（动态添加）
-        const style = document.createElement('style');
-        style.textContent = `
-            .shake {
-                animation: shake 0.5s;
-            }
-            @keyframes shake {
-                0% { transform: translateX(0); }
-                25% { transform: translateX(-10px); }
-                50% { transform: translateX(10px); }
-                75% { transform: translateX(-10px); }
-                100% { transform: translateX(0); }
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
-</body>
+	<head>
+		<link rel="icon" href="./favicon.png">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>系统登录</title>
+		<style>
+			body {
+				background: url('background.jpg') no-repeat;
+				background-position: center center;
+				font-family: Arial, sans-serif;
+				background-attachment: fixed;
+				background-repeat: no-repeat;
+				background-color: #fff;
+				background-size: cover;
+				padding: 0;
+				margin: 0;
+			}
+			.login-container {
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+				border-radius: 8px;
+				position: absolute;
+				background: #fff;
+				padding: 30px;
+				height: 350px;
+				margin: auto;
+				width: 30%;
+				bottom: 0;
+				right: 0;
+				left: 0;
+				top: 0;
+			}
+			h1 {
+				text-align: center;
+				color: #333;
+			}
+			.form-group {
+				margin-bottom: 15px;
+			}
+			.form-group label {
+				margin-bottom: 5px;
+				display: block;
+				color: #555;
+			}
+			.form-group input {
+				border: 1px solid #ddd;
+				box-sizing: border-box;
+				border-radius: 4px;
+				padding: 10px;
+				width: 100%;
+			}
+			button {
+				background-color: #28a745;
+				border-radius: 4px;
+				cursor: pointer;
+				padding: 10px;
+				border: none;
+				color: white;
+				width: 100%;
+			}
+			button:hover {
+				background-color: #218838;
+			}
+			.message {
+				text-align: center;
+				margin-top: 10px;
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="login-container">
+			<h1>系统登录</h1>
+			<form id="loginForm">
+				<div class="form-group">
+					<label for="username">用户名</label>
+					<input type="text" id="username" name="username" required>
+				</div>
+				<div class="form-group">
+					<label for="password">密码</label>
+					<input type="password" id="password" name="password" required>
+				</div>
+				<div class="form-group">
+					<button type="submit">登录</button>
+				</div>
+			</form>
+			<div id="message" class="message"></div>
+		</div>
+		<script src="script.js"></script>
+		<script>
+			document.getElementById('loginForm').addEventListener('submit', function(event) {
+				event.preventDefault(); // 阻止表单默认提交行为
+				const username = document.getElementById('username').value;
+				const password = document.getElementById('password').value;
+				if (username === '' || password === '') {// 验证用户名和密码
+					document.getElementById('message').innerText = '用户名和密码不能为空！';
+					return;
+				}
+				if (username !== 'ZMH' || password !== 'Zmh20121211') {// 固定用户名和密码
+					document.getElementById('message').innerText = '用户名或密码错误！';
+					return;
+				}
+				document.getElementById('message').innerText = '';
+				alert('登录成功！');// 登录成功
+				window.location.href = './file';// 跳转到管理页面
+			});
+		</script>
+	</body>
 </html>
