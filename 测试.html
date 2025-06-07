@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>增强版流媒体MP4播放器 - 大屏优化版</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f1b31, #1a2a6c, #0f1b31);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 90%; /* 修改为90%宽度 */
+            max-width: 1600px; /* 增加最大宽度 */
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0 15px;
+            margin-bottom: 20px;
+            animation: fadeIn 1.2s ease-out;
+            width: 100%;
+        }
+        
+        h1 {
+            font-size: clamp(2.2rem, 6.5vw, 3.5rem);
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .title-icon {
+            margin: 0 15px;
+            animation: pulse 2s infinite;
+            font-size: clamp(2.2rem, 5.5vw, 3rem);
+        }
+        
+        .subtitle {
+            font-size: clamp(1rem, 3.5vw, 1.4rem);
+            opacity: 0.9;
+            max-width: 900px; /* 增加最大宽度 */
+            margin: 20px auto 0;
+            line-height: 1.6;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        .player-container {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            margin-bottom: 40px;
+            position: relative;
+            transition: all 0.3s ease;
+            animation: slideUp 0.8s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+        }
+        
+        .player-container:hover {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+        }
+        
+        .video-container {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        
+        #videoPlayer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            transition: transform 0.3s ease;
+            object-fit: cover;
+        }
+        
+        .controls {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
+            border: none;
+            color: #0f1b31;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 100px;
+            justify-content: center;
+            font-size: clamp(0.9rem, 2.8vw, 1.1rem);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        select {
+            padding: 12px 18px; /* 增大内边距 */
+            border-radius: 50px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            min-width: 170px; /* 增加宽度 */
+            transition: all 0.3s ease;
+            font-size: clamp(0.9rem, 2.8vw, 1.1rem);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        select:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        
+        select:focus {
+            outline: 2px solid #00c9ff;
+        }
+        
+        select option {
+            background: rgba(0,0,0,0.9);
+            padding: 12px;
+            font-size: 1rem;
+        }
+        
+        .progress-container {
+            flex: 1;
+            min-width: 150px;
+            background: rgba(255,255,255,0.1);
+            height: 14px; /* 增加高度 */
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
+            width: 0%;
+            border-radius: 8px;
+            transition: width 0.2s;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .buffer-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: rgba(255,255,255,0.15);
+            width: 0%;
+            border-radius: 8px;
+            transition: width 0.2s;
+            z-index: 1;
+        }
+        
+        .time-display {
+            font-size: clamp(1rem, 2.8vw, 1.2rem);
+            font-weight: 600;
+            min-width: 130px; /* 增加宽度 */
+            text-align: center;
+            background: rgba(0,0,0,0.4);
+            padding: 8px 15px; /* 增大内边距 */
+            border-radius: 30px;
+            white-space: nowrap;
+        }
+        
+        .info-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+        
+        .card {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+        
+        .card h2 {
+            font-size: clamp(1.5rem, 3.5vw, 2rem);
+            margin-bottom: 20px;
+            color: #00c9ff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .card h2 i {
+            font-size: clamp(1.7rem, 3.5vw, 2.2rem);
+        }
+        
+        .card p {
+            line-height: 1.7;
+            margin-bottom: 16px;
+            opacity: 0.9;
+            font-size: clamp(1rem, 2.8vw, 1.2rem);
+        }
+        
+        .tech-list {
+            list-style-type: none;
+        }
+        
+        .tech-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: clamp(1rem, 2.8vw, 1.2rem);
+        }
+        
+        .tech-list li:before {
+            content: "•";
+            color: #00c9ff;
+            font-size: 1.8rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            font-size: clamp(0.9rem, 2.8vw, 1.1rem);
+            opacity: 0.7;
+            width: 100%;
+            margin-top: auto;
+        }
+        
+        .resolution-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.7);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: clamp(0.9rem, 2.8vw, 1.1rem);
+            z-index: 10;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            max-width: 90%;
+            text-align: center;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(255,255,255,0.2);
+            border-top: 6px solid #00c9ff;
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite;
+        }
+        
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 150px; /* 增加宽度 */
+            background: rgba(255,255,255,0.1);
+            padding: 8px 18px; /* 增大内边距 */
+            border-radius: 50px;
+        }
+        
+        #volumeSlider {
+            flex: 1;
+            height: 8px;
+            -webkit-appearance: none;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        #volumeSlider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #00c9ff;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,201,255,0.5);
+        }
+        
+        .feature-badge {
+            background: linear-gradient(45deg, #00c9ff, #00b09b);
+            color: #0f1b31;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: clamp(0.8rem, 2.8vw, 1rem);
+            margin-left: 8px;
+            vertical-align: middle;
+            font-weight: 700;
+        }
+        
+        .fullscreen-btn {
+            min-width: auto;
+            padding: 10px;
+            border-radius: 50%;
+            width: 50px; /* 增加尺寸 */
+            height: 50px; /* 增加尺寸 */
+            justify-content: center;
+        }
+        
+        .play-blocked-content {
+            text-align: center;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .play-blocked-title {
+            margin-bottom: 15px;
+            color: #00c9ff;
+            font-size: clamp(1.3rem, 4.5vw, 1.7rem);
+        }
+        
+        .play-blocked-text {
+            margin-bottom: 20px;
+            max-width: 500px; /* 增加宽度 */
+            line-height: 1.6;
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+        }
+        
+        .start-play-btn {
+            margin-top: 15px;
+            padding: 14px 40px; /* 增大内边距 */
+            background: linear-gradient(to right, #00c9ff, #00b09b);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: clamp(1rem, 3.5vw, 1.3rem);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            max-width: 90%;
+        }
+        
+        .start-play-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 201, 255, 0.4);
+        }
+        
+        /* 新增的移动设备优化样式 */
+        .mobile-controls {
+            display: none;
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.6);
+            border-radius: 15px;
+            padding: 10px;
+            z-index: 10;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .mobile-controls button {
+            min-width: auto;
+            padding: 10px;
+            width: 50px; /* 增加尺寸 */
+            height: 50px; /* 增加尺寸 */
+            border-radius: 50%;
+        }
+        
+        .mobile-time-display {
+            font-size: 1rem; /* 增大字体 */
+            font-weight: 600;
+            background: rgba(0,0,0,0.4);
+            padding: 6px 12px; /* 增大内边距 */
+            border-radius: 20px;
+        }
+        
+        /* 进度条拖拽指示器 */
+        .progress-indicator {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transform: translateX(-50%);
+            display: none;
+            z-index: 20;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        
+        /* 控制区域布局优化 */
+        .main-controls {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            gap: 15px;
+            min-width: 0;
+        }
+        
+        .right-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        /* 新增的移动端进度条 */
+        .mobile-progress-container {
+            position: absolute;
+            bottom: 80px;
+            left: 15px;
+            right: 15px;
+            background: rgba(255,255,255,0.1);
+            height: 8px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            z-index: 10;
+            display: none;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+        }
+        
+        .mobile-progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
+            width: 0%;
+            border-radius: 8px;
+            transition: width 0.2s;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .mobile-buffer-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: rgba(255,255,255,0.15);
+            width: 0%;
+            border-radius: 8px;
+            transition: width 0.2s;
+            z-index: 1;
+        }
+        
+        /* Animations */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 8px rgba(0, 201, 255, 0.5); }
+            to { box-shadow: 0 0 25px rgba(0, 201, 255, 0.8); }
+        }
+        
+        /* 新增的全屏样式 */
+        .fullscreen-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            background: black;
+        }
+        
+        .fullscreen-video video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .fullscreen-video .controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.85);
+        }
+        
+        .fullscreen-video .mobile-controls {
+            display: flex;
+        }
+        
+        /* 新增的宽屏布局 */
+        .wide-layout {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        
+        /* 大屏布局调整 */
+        @media (min-width: 1200px) {
+            .player-container {
+                width: 90%;
+                margin: 0 auto 40px;
+            }
+            
+            .info-panel {
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .card {
+                min-width: 45%;
+            }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%; /* 移动端宽度调整 */
+            }
+            
+            header {
+                padding: 20px 0 15px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 12px;
+            }
+            
+            .progress-container {
+                min-width: 100%;
+                order: 2;
+                height: 16px;
+                margin-bottom: 10px;
+            }
+            
+            .control-group {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            select {
+                min-width: 100%;
+                font-size: 0.95rem;
+            }
+            
+            .volume-container {
+                min-width: 100%;
+                margin-top: 5px;
+            }
+            
+            .card {
+                min-width: 100%;
+                padding: 20px;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+                padding: 12px 20px;
+            }
+            
+            .play-blocked-title {
+                font-size: 1.3rem;
+            }
+            
+            .play-blocked-text {
+                font-size: 0.95rem;
+            }
+            
+            .start-play-btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+            
+            .time-display {
+                min-width: 100%;
+                text-align: center;
+                order: 3;
+            }
+            
+            /* 显示移动设备控制按钮 */
+            .mobile-controls {
+                display: flex;
+            }
+            
+            .main-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .right-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            /* 隐藏桌面控制栏在移动端 */
+            .controls {
+                display: none;
+            }
+            
+            /* 显示移动端进度条 */
+            .mobile-progress-container {
+                display: block;
+            }
+            
+            /* 调整视频容器底部间距 */
+            .video-container {
+                padding-bottom: 60px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
+            .container {
+                width: 100%; /* 小屏幕全宽 */
+            }
+            
+            .mobile-controls button {
+                width: 45px;
+                height: 45px;
+            }
+            
+            button {
+                min-width: 80px;
+                padding: 8px 15px;
+            }
+            
+            .card {
+                padding: 18px;
+            }
+            
+            .card h2 {
+                font-size: 1.3rem;
+            }
+            
+            .tech-list li {
+                font-size: 0.9rem;
+            }
+            
+            .resolution-indicator {
+                padding: 5px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .mobile-progress-container {
+                bottom: 70px;
+                left: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-play-circle title-icon"></i> 增强版流媒体MP4播放器</h1>
+            <p class="subtitle">使用HTML5视频流媒体技术实现MP4视频的边加载边播放功能，支持4K超高清分辨率和实时状态显示，完美适配移动设备</p>
+        </header>
+        
+        <div class="wide-layout">
+            <div class="player-container">
+                <div class="video-container">
+                    <div class="loading-overlay" id="loadingOverlay">
+                        <div class="loading-spinner"></div>
+                    </div>
+                    <div class="resolution-indicator" id="resolutionIndicator"><i class="fas fa-video"></i> 1080P</div>
+                    <video id="videoPlayer" autoplay playsinline>
+                        <!-- 默认视频源 -->
+                        <source src="https://playback.eeo.cn/aebb1300vodsh1252412222/9e7b92cb1397757897401085050/hnwJS2EaDtYA.mp4" type="video/mp4">
+                        您的浏览器不支持HTML5视频播放。
+                    </video>
+                    
+                    <!-- 移动设备进度条 -->
+                    <div class="mobile-progress-container" id="mobileProgressContainer">
+                        <div class="mobile-buffer-bar" id="mobileBufferBar"></div>
+                        <div class="mobile-progress-bar" id="mobileProgressBar"></div>
+                    </div>
+                    
+                    <!-- 移动设备控制按钮 -->
+                    <div class="mobile-controls">
+                        <button id="mobilePlayBtn">
+                            <i class="fas fa-pause"></i>
+                        </button>
+                        <div class="mobile-time-display" id="mobileTimeDisplay">0:00 / 0:00</div>
+                        <button id="mobileFullscreenBtn">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 桌面控制栏 -->
+                <div class="controls">
+                    <div class="main-controls">
+                        <button id="playPauseBtn">
+                            <i class="fas fa-pause"></i> 暂停
+                        </button>
+                    
+                        <div class="progress-container" id="progressContainer">
+                            <div class="progress-indicator" id="progressIndicator">0:00</div>
+                            <div class="buffer-bar" id="bufferBar"></div>
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                        
+                        <div class="volume-container">
+                            <i class="fas fa-volume-up"></i>
+                            <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.8">
+                        </div>
+                    </div>
+                    
+                    <div class="time-display">
+                        <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+                    </div>
+                    
+                    <div class="right-controls">
+                        <select id="speedSelect">
+                            <option value="0.5">0.5x</option>
+                            <option value="0.75">0.75x</option>
+                            <option value="1" selected>1.0（正常）</option>
+                            <option value="1.25">1.25x</option>
+                            <option value="1.5">1.5x</option>
+                            <option value="2">2x</option>
+                        </select>
+                        
+                        <select id="resolutionSelect">
+                            <option value="360">360P (SD)</option>
+                            <option value="480">480P (SD)</option>
+                            <option value="720">720P (HD)</option>
+                            <option value="1080" selected>1080P (Full HD)</option>
+                            <option value="1440">1K (QHD)</option>
+                            <option value="2160">2K (UHD)</option>
+                            <option value="4320">4K (Ultra HD)</option>
+                        </select>
+                        
+                        <button id="fullscreenBtn" class="fullscreen-btn">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-panel">
+                <div class="card">
+                    <h2><i class="fas fa-info-circle"></i> 大屏优化说明 <span class="feature-badge">新功能</span></h2>
+                    <p>已完全解决大屏幕观看体验问题：</p>
+                    <p><i class="fas fa-check" style="color: #92fe9d;"></i> 播放器宽度增加至页面90%，提供更大视野</p>
+                    <p><i class="fas fa-check" style="color: #92fe9d;"></i> 控制元素尺寸增大，更易操作</p>
+                    <p><i class="fas fa-check" style="color: #92fe9d;"></i> 字体大小优化，提升可读性</p>
+                    <p><i class="fas fa-check" style="color: #92fe9d;"></i> 按钮间距增大，减少误触</p>
+                    <p><i class="fas fa-check" style="color: #92fe9d;"></i> 全屏模式优化，沉浸式体验</p>
+                    <p><i class="fas fa-check" style="color: #92fe9d;"></i> 宽屏布局适配，充分利用空间</p>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-cogs"></i> 技术实现</h2>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-check-circle"></i> 响应式设计，完美适配各种设备</li>
+                        <li><i class="fas fa-check-circle"></i> 移动端专用控制界面</li>
+                        <li><i class="fas fa-check-circle"></i> 双进度条系统（桌面/移动）</li>
+                        <li><i class="fas fa-check-circle"></i> 触摸友好的大按钮设计</li>
+                        <li><i class="fas fa-check-circle"></i> 移动端手势支持（滑动调整进度）</li>
+                        <li><i class="fas fa-check-circle"></i> 智能媒体查询适配不同屏幕尺寸</li>
+                        <li><i class="fas fa-check-circle"></i> 移动设备性能优化</li>
+                        <li><i class="fas fa-check-circle"></i> 自适应字体大小</li>
+                        <li><i class="fas fa-check-circle"></i> 全屏模式优化</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2025增强版流媒体MP4播放器 | 完美支持移动设备 | 基于HTML5视频技术 | 默认声音与播放已开启</p>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('videoPlayer');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const mobilePlayBtn = document.getElementById('mobilePlayBtn');
+            const progressBar = document.getElementById('progressBar');
+            const bufferBar = document.getElementById('bufferBar');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressIndicator = document.getElementById('progressIndicator');
+            const currentTimeDisplay = document.getElementById('currentTime');
+            const durationDisplay = document.getElementById('duration');
+            const mobileTimeDisplay = document.getElementById('mobileTimeDisplay');
+            const speedSelect = document.getElementById('speedSelect');
+            const resolutionSelect = document.getElementById('resolutionSelect');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const resolutionIndicator = document.getElementById('resolutionIndicator');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            const mobileFullscreenBtn = document.getElementById('mobileFullscreenBtn');
+            const playerContainer = document.querySelector('.player-container');
+            
+            // 移动端进度条元素
+            const mobileProgressBar = document.getElementById('mobileProgressBar');
+            const mobileBufferBar = document.getElementById('mobileBufferBar');
+            const mobileProgressContainer = document.getElementById('mobileProgressContainer');
+            
+            // 视频源配置
+            const videoSources = {
+                '360': 'https://playback.eeo.cn/aebb1300vodsh1252412222/9e7b92cb1397757897401085050/hnwJS2EaDtYA.mp4',
+                '480': 'https://playback.eeo.cn/aebb1300vodsh1252412222/9e7b92cb1397757897401085050/hnwJS2EaDtYA.mp4',
+                '720': 'https://playback.eeo.cn/aebb1300vodsh1252412222/9e7b92cb1397757897401085050/hnwJS2EaDtYA.mp4',
+                '1080': 'https://playback.eeo.cn/aebb1300vodsh1252412222/9e7b92cb1397757897401085050/hnwJS2EaDtYA.mp4',
+                '1440': 'https://playback.eeo.cn/aebb1300vodsh1252412222/9e7b92cb1397757897401085050/hnwJS2EaDtYA.mp4',
+                '2160': 'https://playback.eeo.cn/aebb1300vodsh1252412222/9e7b92cb1397757897401085050/hnwJS2EaDtYA.mp4',
+                '4320': 'https://playback.eeo.cn/aebb1300vodsh1252412222/9e7b92cb1397757897401085050/hnwJS2EaDtYA.mp4'
+            };
+            
+            // 设置默认声音开启和播放
+            video.volume = 0.8;
+            video.muted = false;
+            
+            // 进度条拖拽相关变量
+            let isDragging = false;
+            let wasPlaying = false;
+            
+            // 尝试自动播放
+            const playPromise = video.play();
+            
+            // 如果自动播放失败，显示提示
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("自动播放失败:", error);
+                    loadingOverlay.innerHTML = `
+                        <div class="play-blocked-content">
+                            <h3 class="play-blocked-title">播放被阻止</h3>
+                            <p class="play-blocked-text">您的浏览器阻止了自动播放功能。请点击下方按钮开始播放。</p>
+                            <button id="startPlayBtn" class="start-play-btn">
+                                <i class="fas fa-play"></i> 开始播放
+                            </button>
+                        </div>
+                    `;
+                    
+                    document.getElementById('startPlayBtn').addEventListener('click', () => {
+                        video.play();
+                        loadingOverlay.style.opacity = '0';
+                        setTimeout(() => {
+                            loadingOverlay.style.display = 'none';
+                        }, 500);
+                    });
+                });
+            }
+            
+            // 更新播放/暂停按钮状态
+            function updatePlayPauseButtons() {
+                if (video.paused) {
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i> 播放';
+                    mobilePlayBtn.innerHTML = '<i class="fas fa-play"></i>';
+                } else {
+                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i> 暂停';
+                    mobilePlayBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                }
+            }
+            
+            // 播放/暂停控制
+            function togglePlayPause() {
+                if (video.paused) {
+                    video.play();
+                } else {
+                    video.pause();
+                }
+                updatePlayPauseButtons();
+            }
+            
+            playPauseBtn.addEventListener('click', togglePlayPause);
+            mobilePlayBtn.addEventListener('click', togglePlayPause);
+            
+            // 音量控制
+            volumeSlider.addEventListener('input', () => {
+                video.volume = volumeSlider.value;
+            });
+            
+            // 播放速度控制
+            speedSelect.addEventListener('change', () => {
+                video.playbackRate = parseFloat(speedSelect.value);
+            });
+            
+            // 分辨率切换
+            resolutionSelect.addEventListener('change', () => {
+                const quality = resolutionSelect.value;
+                
+                // 显示加载动画
+                loadingOverlay.style.display = 'flex';
+                loadingOverlay.style.opacity = '1';
+                
+                // 更新视频源
+                video.src = videoSources[quality];
+                video.load();
+                video.play();
+                
+                // 更新分辨率指示器
+                let qualityText = `${quality}P`;
+                if (quality >= 4320) qualityText = "4K";
+                else if (quality >= 2160) qualityText = "2K";
+                resolutionIndicator.innerHTML = `<i class="fas fa-video"></i> ${qualityText}`;
+                
+                // 添加短暂动画效果
+                resolutionSelect.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    resolutionSelect.style.transform = 'scale(1)';
+                }, 300);
+            });
+            
+            // 视频全屏控制
+            function toggleFullscreen() {
+                if (document.fullscreenElement) {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                    }
+                } else {
+                    if (playerContainer.requestFullscreen) {
+                        playerContainer.requestFullscreen();
+                    } else if (playerContainer.mozRequestFullScreen) {
+                        playerContainer.mozRequestFullScreen();
+                    } else if (playerContainer.webkitRequestFullscreen) {
+                        playerContainer.webkitRequestFullscreen();
+                    } else if (playerContainer.msRequestFullscreen) {
+                        playerContainer.msRequestFullscreen();
+                    }
+                }
+            }
+            
+            // 更新全屏按钮图标
+            function updateFullscreenIcon() {
+                if (document.fullscreenElement) {
+                    fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+                    mobileFullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+                } else {
+                    fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+                    mobileFullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+                }
+            }
+            
+            fullscreenBtn.addEventListener('click', toggleFullscreen);
+            mobileFullscreenBtn.addEventListener('click', toggleFullscreen);
+            
+            // 监听全屏变化
+            document.addEventListener('fullscreenchange', updateFullscreenIcon);
+            document.addEventListener('webkitfullscreenchange', updateFullscreenIcon);
+            document.addEventListener('mozfullscreenchange', updateFullscreenIcon);
+            document.addEventListener('MSFullscreenChange', updateFullscreenIcon);
+            
+            // 进度条更新
+            video.addEventListener('timeupdate', () => {
+                // 只有在未拖动时才更新时间
+                if (!isDragging) {
+                    const percent = (video.currentTime / video.duration) * 100;
+                    progressBar.style.width = `${percent}%`;
+                    mobileProgressBar.style.width = `${percent}%`;
+                }
+                
+                // 更新时间显示
+                const currentTime = formatTime(video.currentTime);
+                const duration = formatTime(video.duration);
+                currentTimeDisplay.textContent = currentTime;
+                durationDisplay.textContent = duration;
+                mobileTimeDisplay.textContent = `${currentTime} / ${duration}`;
+            });
+            
+            // 缓冲进度更新
+            video.addEventListener('progress', () => {
+                if (video.buffered.length > 0) {
+                    const bufferedEnd = video.buffered.end(video.buffered.length - 1);
+                    const duration = video.duration;
+                    if (duration > 0) {
+                        const bufferPercent = (bufferedEnd / duration) * 100;
+                        bufferBar.style.width = `${bufferPercent}%`;
+                        mobileBufferBar.style.width = `${bufferPercent}%`;
+                    }
+                }
+            });
+            
+            // 点击进度条跳转
+            function setProgressPosition(e) {
+                const rect = progressContainer.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                const newTime = Math.max(0, Math.min(1, pos)) * video.duration;
+                video.currentTime = newTime;
+                progressBar.style.width = `${pos * 100}%`;
+                mobileProgressBar.style.width = `${pos * 100}%`;
+            }
+            
+            // 移动端进度条跳转
+            function setMobileProgressPosition(e) {
+                const rect = mobileProgressContainer.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                const newTime = Math.max(0, Math.min(1, pos)) * video.duration;
+                video.currentTime = newTime;
+                progressBar.style.width = `${pos * 100}%`;
+                mobileProgressBar.style.width = `${pos * 100}%`;
+            }
+            
+            progressContainer.addEventListener('click', setProgressPosition);
+            mobileProgressContainer.addEventListener('click', setMobileProgressPosition);
+            
+            // 视频加载后显示时长
+            video.addEventListener('loadedmetadata', () => {
+                if (!isNaN(video.duration)) {
+                    const duration = formatTime(video.duration);
+                    durationDisplay.textContent = duration;
+                    mobileTimeDisplay.textContent = `0:00 / ${duration}`;
+                }
+                updatePlayPauseButtons();
+            });
+            
+            // 视频开始播放
+            video.addEventListener('playing', () => {
+                // 隐藏加载动画
+                loadingOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                }, 500);
+                
+                updatePlayPauseButtons();
+            });
+            
+            // 视频缓冲
+            video.addEventListener('waiting', () => {
+                // 显示加载动画
+                loadingOverlay.style.display = 'flex';
+                setTimeout(() => {
+                    loadingOverlay.style.opacity = '1';
+                }, 10);
+            });
+            
+            // 格式化时间（秒 -> 分:秒）
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                seconds = Math.floor(seconds % 60);
+                return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            }
+            
+            // 初始化按钮状态
+            updatePlayPauseButtons();
+            
+            // 设置初始分辨率为1080P
+            video.src = videoSources['1080'];
+            
+            // 添加键盘快捷键
+            document.addEventListener('keydown', (e) => {
+                switch(e.key) {
+                    case ' ':
+                        e.preventDefault();
+                        togglePlayPause();
+                        break;
+                    case 'ArrowRight':
+                        video.currentTime += 5;
+                        break;
+                    case 'ArrowLeft':
+                        video.currentTime -= 5;
+                        break;
+                    case 'ArrowUp':
+                        if (video.volume < 1) video.volume = Math.min(video.volume + 0.1, 1);
+                        volumeSlider.value = video.volume;
+                        break;
+                    case 'ArrowDown':
+                        if (video.volume > 0) video.volume = Math.max(video.volume - 0.1, 0);
+                        volumeSlider.value = video.volume;
+                        break;
+                    case 'm':
+                        video.muted = !video.muted;
+                        break;
+                    case 'f':
+                        toggleFullscreen();
+                        break;
+                }
+            });
+            
+            // 进度条拖拽功能实现
+            progressContainer.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                wasPlaying = !video.paused;
+                video.pause();
+                setProgressPosition(e);
+                progressIndicator.style.display = 'block';
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                
+                const rect = progressContainer.getBoundingClientRect();
+                const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                const newTime = pos * video.duration;
+                
+                // 更新进度条位置
+                progressBar.style.width = `${pos * 100}%`;
+                mobileProgressBar.style.width = `${pos * 100}%`;
+                
+                // 更新指示器位置和内容
+                progressIndicator.style.left = `${pos * 100}%`;
+                progressIndicator.textContent = formatTime(newTime);
+                
+                // 显示指示器
+                progressIndicator.style.display = 'block';
+            });
+            
+            document.addEventListener('mouseup', (e) => {
+                if (isDragging) {
+                    isDragging = false;
+                    setProgressPosition(e);
+                    if (wasPlaying) {
+                        video.play();
+                    }
+                    progressIndicator.style.display = 'none';
+                }
+            });
+            
+            // 移动端进度条拖拽
+            mobileProgressContainer.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                wasPlaying = !video.paused;
+                video.pause();
+                const touch = e.touches[0];
+                setMobileProgressPosition(touch);
+                e.preventDefault();
+            });
+            
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                const touch = e.touches[0];
+                setMobileProgressPosition(touch);
+                e.preventDefault();
+            });
+            
+            document.addEventListener('touchend', (e) => {
+                if (isDragging) {
+                    isDragging = false;
+                    if (wasPlaying) {
+                        video.play();
+                    }
+                }
+            });
+            
+            // 视频播放结束重置按钮状态
+            video.addEventListener('ended', () => {
+                updatePlayPauseButtons();
+            });
+        });
+    </script>
+</body>
+</html>
