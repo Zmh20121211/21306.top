@@ -27,7 +27,7 @@
         
         .container {
             width: 90%;
-            max-width: none;
+            max-width: 1400px;
             margin: 20px auto;
             padding: 0;
         }
@@ -54,6 +54,7 @@
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
+            width: 100%; /* 添加宽度100%确保标题居中 */
         }
         
         .title-icon {
@@ -203,7 +204,6 @@
             background: linear-gradient(to right, #00c9ff, #92fe9d);
             width: 0%;
             border-radius: 4px;
-            /* 删除进度条过渡动画 - 解决拖拽延迟问题 */
             z-index: 2;
         }
         
@@ -544,7 +544,6 @@
             background: linear-gradient(to right, #00c9ff, #92fe9d);
             width: 0%;
             border-radius: 8px;
-            /* 删除移动端进度条过渡动画 - 解决拖拽延迟问题 */
             position: relative;
             z-index: 2;
         }
@@ -946,6 +945,80 @@
                 padding-bottom: 70px;
             }
         }
+        
+        /* 新增变量配置面板样式 */
+        .config-panel {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .config-panel h2 {
+            color: #00c9ff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .config-panel h2 i {
+            color: #92fe9d;
+        }
+        
+        .url-input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        #videoUrl {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        #videoUrl:focus {
+            outline: 2px solid #00c9ff;
+        }
+        
+        #updateVideoBtn {
+            padding: 12px 25px;
+            background: linear-gradient(to right, #00c9ff, #00b09b);
+            border: none;
+            border-radius: 50px;
+            color: #0f1b31;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        #updateVideoBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .url-examples {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 10px;
+        }
+        
+        .url-examples code {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
     </style>
 </head>
 <body>
@@ -953,6 +1026,16 @@
         <header>
             <h1><i class="fas fa-play-circle title-icon"></i> 流媒体MP4播放器-课题</h1>
         </header>
+        
+        <!-- 新增视频链接配置面板 -->
+        <div class="config-panel">
+            <h2><i class="fas fa-link"></i> 视频链接配置</h2>
+            <div class="url-input-container">
+                <input type="text" id="videoUrl" placeholder="在此输入视频链接..." value="https://playback.eeo.cn/aebb1300vodsh1252412222/9e7b92cb1397757897401085050/hnwJS2EaDtYA.mp4">
+                <button id="updateVideoBtn">更新视频源</button>
+            </div>
+            <p class="url-examples">提示：只需在此处修改一次视频链接，所有分辨率都会自动更新！</p>
+        </div>
         
         <div class="wide-layout">
             <div class="player-container">
@@ -1078,6 +1161,15 @@
                                         <div class="update-description">已解决分辨率检测错误问题，现在能够正确选择1080p而非4K</div>
                                     </div>
                                 </li>
+                                <li>
+                                    <div class="update-icon">
+                                        <i class="fas fa-link"></i>
+                                    </div>
+                                    <div class="update-content">
+                                        <div class="update-title">视频链接统一管理</div>
+                                        <div class="update-description">添加视频链接全局变量，只需修改一处即可更新所有分辨率视频源</div>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -1095,6 +1187,7 @@
                         <li><i class="fas fa-check-circle"></i> 移动设备性能优化</li>
                         <li><i class="fas fa-check-circle"></i> 自适应字体大小</li>
                         <li><i class="fas fa-check-circle"></i> 全屏模式优化</li>
+                        <li><i class="fas fa-check-circle"></i> 视频源全局变量管理</li>
                     </ul>
                 </div>
             </div>
@@ -1102,10 +1195,13 @@
     </div>
     
     <footer>
-        <p>© 2025智能分辨率视频播放器 | 准确识别最高分辨率 | 基于HTML5视频技术 | 已修复分辨率检测问题</p>
+        <p>© 2025流媒体MP4播放器 | 基于HTML5视频技术</p>
     </footer>
     
     <script>
+        // 定义全局视频链接变量
+        let videoBaseUrl = 'https://playback.eeo.cn/aebb1300vodsh1252412222/9e7b92cb1397757897401085050/hnwJS2EaDtYA.mp4';
+
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('videoPlayer');
             const playPauseBtn = document.getElementById('playPauseBtn');
@@ -1126,21 +1222,60 @@
             const mobileFullscreenBtn = document.getElementById('mobileFullscreenBtn');
             const playerContainer = document.querySelector('.player-container');
             
+            // 配置面板元素
+            const videoUrlInput = document.getElementById('videoUrl');
+            const updateVideoBtn = document.getElementById('updateVideoBtn');
+            
             // 移动端进度条元素
             const mobileProgressBar = document.getElementById('mobileProgressBar');
             const mobileBufferBar = document.getElementById('mobileBufferBar');
             const mobileProgressContainer = document.getElementById('mobileProgressContainer');
             
-            // 视频源配置（实际应用中可以从服务器获取）
+            // 视频源配置（使用全局变量）
             const videoSources = {
-                '360': 'https://playback.eeo.cn/aebb1300vodsh1252412222/9e7b92cb1397757897401085050/hnwJS2EaDtYA.mp4',
-                '480': 'https://playback.eeo.cn/aebb1300vodsh1252412222/9e7b92cb1397757897401085050/hnwJS2EaDtYA.mp4',
-                '720': 'https://playback.eeo.cn/aebb1300vodsh1252412222/9e7b92cb1397757897401085050/hnwJS2EaDtYA.mp4',
-                '1080': 'https://playback.eeo.cn/aebb1300vodsh1252412222/9e7b92cb1397757897401085050/hnwJS2EaDtYA.mp4'
+                '360': videoBaseUrl,
+                '480': videoBaseUrl,
+                '720': videoBaseUrl,
+                '1080': videoBaseUrl
             };
             
             // 设置默认声音开启和播放
             video.volume = 0.8;
+            
+            // 更新视频源函数
+            function updateVideoSources() {
+                // 更新全局变量
+                videoBaseUrl = videoUrlInput.value;
+                
+                // 更新所有分辨率链接
+                for (let res in videoSources) {
+                    videoSources[res] = videoBaseUrl;
+                }
+                
+                // 重新设置最高分辨率
+                const highestRes = setHighestResolution();
+                
+                // 显示成功提示
+                resolutionIndicator.innerHTML = `<i class="fas fa-check-circle"></i> 视频源已更新`;
+                resolutionIndicator.style.backgroundColor = 'rgba(40, 167, 69, 0.8)';
+                resolutionIndicator.style.animation = "glow 1s 3";
+                
+                setTimeout(() => {
+                    resolutionIndicator.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                    resolutionIndicator.style.animation = "";
+                    if (highestRes) {
+                        let qualityText = `${highestRes}P`;
+                        if (highestRes >= 4320) qualityText = "4K";
+                        else if (highestRes >= 2160) qualityText = "2K";
+                        else if (highestRes >= 1440) qualityText = "1K";
+                        else if (highestRes >= 1080) qualityText = "1080P";
+                        resolutionIndicator.innerHTML = `<i class="fas fa-video"></i> ${qualityText}`;
+                    }
+                }, 3000);
+            }
+            
+            // 绑定更新按钮事件
+            updateVideoBtn.addEventListener('click', updateVideoSources);
             
             // 动态生成分辨率选择框
             function populateResolutionSelect() {
