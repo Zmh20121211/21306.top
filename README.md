@@ -45,5 +45,6 @@
 |为网站添加“GPL-3.0 许可证”|2025年5月12日|
 |为网站添加你当前在看的这个“运营日志”|2025年5月12日|
 |修饰所有跳转的链接格式（从网址改为相对路径）|2025年5月13日|
+|正在制作新的视频播放界面...|2025年6月 - 现在|
 ## Star 历史
 [![Star History Chart](https://api.star-history.com/svg?repos=Zmh20121211/21306.top&type=Date)](https://www.star-history.com/#Zmh20121211/21306.top&Date)
