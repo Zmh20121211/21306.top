@@ -54,7 +54,7 @@
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
-            width: 100%; /* 添加宽度100%确保标题居中 */
+            width: 100%;
         }
         
         .title-icon {
@@ -755,6 +755,117 @@
             width: 100%;
         }
         
+        /* 配置面板样式优化 - 宽度与播放器一致 */
+        .config-panel {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .config-panel:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            background: rgba(0, 0, 0, 0.55);
+        }
+        
+        .config-panel h2 {
+            color: #00c9ff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.6rem;
+            transition: all 0.3s ease;
+        }
+        
+        .config-panel h2 i {
+            color: #92fe9d;
+            transition: transform 0.3s ease;
+        }
+        
+        .config-panel:hover h2 i {
+            transform: rotate(15deg);
+        }
+        
+        .url-input-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        #videoUrl {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        #videoUrl:focus {
+            outline: 2px solid #00c9ff;
+            background: rgba(255,255,255,0.15);
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(0,201,255,0.2);
+        }
+        
+        #updateVideoBtn {
+            padding: 14px 30px;
+            background: linear-gradient(to right, #00c9ff, #00b09b);
+            border: none;
+            border-radius: 50px;
+            color: #0f1b31;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 150px;
+        }
+        
+        #updateVideoBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            background: linear-gradient(to right, #00bff9, #00a38d);
+        }
+        
+        .url-examples {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            margin-top: 15px;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+        
+        .url-examples code {
+            background: rgba(255,255,255,0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            transition: all 0.3s ease;
+        }
+        
+        .url-examples code:hover {
+            background: rgba(0,201,255,0.2);
+            transform: translateY(-1px);
+        }
+        
         @media (min-width: 1200px) {
             .player-container {
                 width: 100%;
@@ -884,6 +995,21 @@
                 padding: 5px 10px;
                 max-width: 100px;
             }
+            
+            /* 移动端配置面板样式 */
+            .url-input-container {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            #updateVideoBtn {
+                width: 100%;
+                padding: 12px;
+            }
+            
+            .config-panel {
+                padding: 20px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -945,80 +1071,6 @@
                 padding-bottom: 70px;
             }
         }
-        
-        /* 新增变量配置面板样式 */
-        .config-panel {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
-            width: 100%;
-            max-width: 800px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .config-panel h2 {
-            color: #00c9ff;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.5rem;
-        }
-        
-        .config-panel h2 i {
-            color: #92fe9d;
-        }
-        
-        .url-input-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        #videoUrl {
-            flex: 1;
-            padding: 12px 15px;
-            border-radius: 50px;
-            border: none;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            font-size: 1rem;
-        }
-        
-        #videoUrl:focus {
-            outline: 2px solid #00c9ff;
-        }
-        
-        #updateVideoBtn {
-            padding: 12px 25px;
-            background: linear-gradient(to right, #00c9ff, #00b09b);
-            border: none;
-            border-radius: 50px;
-            color: #0f1b31;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        #updateVideoBtn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
-        .url-examples {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-top: 10px;
-        }
-        
-        .url-examples code {
-            background: rgba(255,255,255,0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-        }
     </style>
 </head>
 <body>
@@ -1027,14 +1079,14 @@
             <h1><i class="fas fa-play-circle title-icon"></i> 流媒体MP4播放器-课题</h1>
         </header>
         
-        <!-- 新增视频链接配置面板 -->
+        <!-- 优化后的视频链接配置面板 -->
         <div class="config-panel">
             <h2><i class="fas fa-link"></i> 视频链接配置</h2>
             <div class="url-input-container">
                 <input type="text" id="videoUrl" placeholder="在此输入视频链接..." value="https://playback.eeo.cn/aebb1300vodsh1252412222/9e7b92cb1397757897401085050/hnwJS2EaDtYA.mp4">
-                <button id="updateVideoBtn">更新视频源</button>
+                <button id="updateVideoBtn"><i class="fas fa-sync-alt"></i> 更新视频源</button>
             </div>
-            <p class="url-examples">提示：只需在此处修改一次视频链接，所有分辨率都会自动更新！</p>
+            <p class="url-examples">提示：只需在此处修改一次视频链接，所有分辨率都会自动更新！示例链接: <code>https://example.com/video.mp4</code></p>
         </div>
         
         <div class="wide-layout">
