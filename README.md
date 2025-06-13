@@ -112,9 +112,14 @@
     <td>2025年5月12日</td>
     <td>📜 添加GPL-3.0许可证和运营日志</td>
   </tr>
-  <tr style="background: #f8f9fa; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+  <tr style="background: #f8f9fa;">
     <td>2025年5月13日</td>
     <td>🔗 修饰所有跳转链接格式（改为相对路径）</td>
+  </tr>
+  <!-- 新增的美化自述文件条目 -->
+  <tr style="background: #f1f3f5; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+    <td>2025年6月13日</td>
+    <td>🎨 美化自述文件</td>
   </tr>
 </table>
 
@@ -167,7 +172,7 @@
   <tr style="background: #fff8f6; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
     <td>2025年6月13日-今日</td>
     <td>🔧 持续优化</td>
-    <td>修复问题与性能优化（开发中）</td>
+    <td>修复问题与性能优化（开发中...）</td>
   </tr>
 </table>
 
