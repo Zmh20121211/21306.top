@@ -1,6 +1,6 @@
 # 🚀 Project Development Log
 
-> [View in Chinese](README.md)
+> [查看中文版](README.md)
 
 <div align="center">
   <img src="https://img.shields.io/badge/Status-Active-success?style=flat-square&logo=github" alt="Project Status">
