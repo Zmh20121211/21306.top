@@ -1,6 +1,6 @@
 # 🚀 项目开发与运营日志
 
-> [查看英文版](README_EN.md)
+> [View in English](README_EN.md)
 
 <div align="center">
   <img src="https://img.shields.io/badge/项目状态-活跃中-success?style=flat-square&logo=github" alt="项目状态">
